@@ -75,10 +75,9 @@ public class BinaryTreeIterator<T> implements Iterator<T> {
     }
 
     private void setIsMovingFurther() {
-        isMovingFurther = current.getLeftChild() != null;
+        isMovingFurther = current.getLeftChild() != null && current.getLeftChild() != previous;
         isMovingFurther |= current.getRightChild() != null;
-        isMovingFurther |= current.getLeftChild() != previous;
-        isMovingFurther &=  current.getRightChild() != previous;
+        isMovingFurther &= current.getRightChild() != previous;
     }
 
     private void setIsNextLeft() {
