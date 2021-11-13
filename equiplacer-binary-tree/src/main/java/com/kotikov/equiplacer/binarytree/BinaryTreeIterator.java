@@ -63,13 +63,8 @@ public class BinaryTreeIterator<T> implements Iterator<T> {
             current = current.getParent();
             setIsMovingFurther();
         }
-        if (isNextLeft) {
-            previous = current;
-            current = current.getLeftChild();
-        } else {
-            previous = current;
-            current = current.getRightChild();
-        }
+        previous = current;
+        current = isNextLeft ? current.getLeftChild() : current.getRightChild();
         setIsNextLeft();
         setIsMovingFurther();
     }

@@ -1,9 +1,8 @@
 package com.kotikov.equiplacer.binarytree;
 
-import java.util.Collection;
 import java.util.Iterator;
 
-public class BinaryTree<T> implements Collection<T> {
+public class BinaryTree<T> implements Iterable<T> {
     private Node rootNode;
     private int size;
 
@@ -20,19 +19,8 @@ public class BinaryTree<T> implements Collection<T> {
         return rootNode;
     }
 
-    @Override
     public int size() {
         return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        return false;
     }
 
     @Override
@@ -40,49 +28,27 @@ public class BinaryTree<T> implements Collection<T> {
         return new BinaryTreeIterator<>(this);
     }
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
-
-    @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean add(T t) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
     public void clear() {
+        Node node = rootNode;
+        rootNode = null;
+        clearRecursively(node);
+        size = 0;
+    }
 
+    private void clearRecursively(Node node) {
+        if (node == null) {
+            return;
+        }
+        node.data = null;
+        node.parent = null;
+        if (node.leftChild != null) {
+            clearRecursively(node.leftChild);
+        }
+        if (node.leftChild != null) {
+            clearRecursively(node.rightChild);
+        }
+        node.leftChild = null;
+        node.rightChild = null;
     }
 
     public class Node {
