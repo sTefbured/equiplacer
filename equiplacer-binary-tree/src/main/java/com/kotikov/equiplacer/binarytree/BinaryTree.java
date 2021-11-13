@@ -19,6 +19,12 @@ public class BinaryTree<T> implements Iterable<T> {
         return rootNode;
     }
 
+    public void setRootNode(T data) {
+        clear();
+        rootNode = new Node(data);
+        size = 1;
+    }
+
     public int size() {
         return size;
     }
