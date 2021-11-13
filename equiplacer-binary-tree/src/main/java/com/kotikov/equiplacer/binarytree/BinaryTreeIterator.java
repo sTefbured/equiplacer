@@ -1,5 +1,7 @@
 package com.kotikov.equiplacer.binarytree;
 
+import com.kotikov.equiplacer.binarytree.node.Node;
+
 import java.util.Iterator;
 
 /**
@@ -7,28 +9,30 @@ import java.util.Iterator;
  * @param <T> type of stored data
  */
 public class BinaryTreeIterator<T> implements Iterator<T> {
-    private final BinaryTree<T> last;
+    private final Node<T> last;
 
-    private BinaryTree<T> current;
-    private BinaryTree<T> previous;
-    private boolean isNextLeft = true;
-    private boolean isMovingFurther = true;
+    private Node<T> current;
+    private Node<T> previous;
+    private boolean isNextLeft;
+    private boolean isMovingFurther;
     private boolean hasNext;
 
 
     public BinaryTreeIterator(BinaryTree<T> binaryTree) {
-        current = binaryTree;
-        last = findLast(binaryTree);
+        current = binaryTree.getRootNode();
+        last = findLast(current);
+        isNextLeft = true;
+        isMovingFurther = true;
         hasNext = current != null;
     }
 
-    private BinaryTree<T> findLast(BinaryTree<T> binaryTree) {
-        if (binaryTree.getRightChild() != null) {
-            return findLast(binaryTree.getRightChild());
-        } else if (binaryTree.getLeftChild() != null) {
-            return findLast(binaryTree.getLeftChild());
+    private Node<T> findLast(Node<T> rootNode) {
+        if (rootNode.getRightChild() != null) {
+            return findLast(rootNode.getRightChild());
+        } else if (rootNode.getLeftChild() != null) {
+            return findLast(rootNode.getLeftChild());
         }
-        return binaryTree;
+        return rootNode;
     }
 
     @Override
@@ -45,8 +49,8 @@ public class BinaryTreeIterator<T> implements Iterator<T> {
         return getCurrent().getData();
     }
 
-    private BinaryTree<T> getCurrent() {
-        BinaryTree<T> result = current;
+    private Node<T> getCurrent() {
+        Node<T> result = current;
         moveNext();
         return result;
     }

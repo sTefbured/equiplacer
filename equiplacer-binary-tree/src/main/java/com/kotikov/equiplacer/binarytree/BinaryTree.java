@@ -1,58 +1,27 @@
 package com.kotikov.equiplacer.binarytree;
 
+import com.kotikov.equiplacer.binarytree.node.Node;
+
 import java.util.Collection;
 import java.util.Iterator;
 
 public class BinaryTree<T> implements Collection<T> {
-    private BinaryTree<T> leftChild;
-    private BinaryTree<T> rightChild;
-    private BinaryTree<T> parent;
-    private T data;
+    private Node<T> rootNode;
     private int size;
 
     public BinaryTree() {
 
     }
 
-    public BinaryTree(T data) {
-        this.data = data;
+    public BinaryTree(T rootNodeData) {
+        this.rootNode = new Node<>(rootNodeData);
         size = 1;
     }
 
-    private BinaryTree(T data, BinaryTree<T> parent) {
-        this(data);
-        this.parent = parent;
+    public Node<T> getRootNode() {
+        return rootNode;
     }
 
-    public BinaryTree<T> addLeftChild(T child) {
-        leftChild = new BinaryTree<>(child, this);
-        return leftChild;
-    }
-
-    public BinaryTree<T> addRightChild(T child) {
-        rightChild = new BinaryTree<>(child, this);
-        return rightChild;
-    }
-
-    public BinaryTree<T> getLeftChild() {
-        return leftChild;
-    }
-
-    public BinaryTree<T> getRightChild() {
-        return rightChild;
-    }
-
-    public BinaryTree<T> getParent() {
-        return parent;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 
     //TODO: implement all the methods below
     @Override

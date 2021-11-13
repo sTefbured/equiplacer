@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BinaryTreeTest {
+class BinaryTreeIteratorTest {
     private BinaryTree<Integer> binaryTree1;
     private BinaryTree<Integer> binaryTree2;
     private BinaryTree<Integer> binaryTree3;
@@ -18,7 +18,7 @@ class BinaryTreeTest {
             treeValues[i] = i;
         }
         binaryTree1 = new BinaryTree<>(treeValues[0]);
-        binaryTree1.addLeftChild(treeValues[1]).addLeftChild(treeValues[2]).addLeftChild(treeValues[3])
+        binaryTree1.getRootNode().addLeftChild(treeValues[1]).addLeftChild(treeValues[2]).addLeftChild(treeValues[3])
                 .addRightChild(treeValues[4]).getParent().getParent().addRightChild(treeValues[5])
                 .getParent().getParent().addRightChild(treeValues[6]).addLeftChild(treeValues[7])
                 .addLeftChild(treeValues[8]).addLeftChild(treeValues[9]).getParent().addRightChild(treeValues[10])
@@ -29,7 +29,7 @@ class BinaryTreeTest {
                 .getParent().getParent().getParent().addRightChild(treeValues[20]);
 
         binaryTree2 = new BinaryTree<>(treeValues[0]);
-        binaryTree2.addLeftChild(treeValues[1]).addLeftChild(treeValues[2]).addRightChild(treeValues[3])
+        binaryTree2.getRootNode().addLeftChild(treeValues[1]).addLeftChild(treeValues[2]).addRightChild(treeValues[3])
                 .addRightChild(treeValues[4]).getParent().getParent().getParent().addRightChild(treeValues[5])
                 .getParent().getParent().addRightChild(treeValues[6]).addRightChild(treeValues[7])
                 .addLeftChild(treeValues[8]).getParent().addRightChild(treeValues[9]).addRightChild(treeValues[10])
@@ -39,7 +39,7 @@ class BinaryTreeTest {
                 .addRightChild(treeValues[19]).getParent().getParent().getParent().addRightChild(treeValues[20]);
 
         binaryTree3 = new BinaryTree<>(treeValues[0]);
-        binaryTree3.addLeftChild(treeValues[1]).addLeftChild(treeValues[2]).addLeftChild(treeValues[3])
+        binaryTree3.getRootNode().addLeftChild(treeValues[1]).addLeftChild(treeValues[2]).addLeftChild(treeValues[3])
                 .getParent().addRightChild(treeValues[4]).getParent().getParent().addRightChild(treeValues[5])
                 .addLeftChild(treeValues[6]).addLeftChild(treeValues[7]).getParent().addRightChild(treeValues[8])
                 .getParent().getParent().addRightChild(treeValues[9]).getParent().getParent().getParent()
