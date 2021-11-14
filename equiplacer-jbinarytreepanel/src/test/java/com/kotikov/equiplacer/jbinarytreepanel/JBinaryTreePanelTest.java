@@ -11,7 +11,7 @@ class JBinaryTreePanelTest {
             frame.setSize(500, 500);
             frame.setLocationRelativeTo(null);
             frame.setLayout(new GridLayout(1, 1));
-            frame.add(new JBinaryTreePanel());
+            frame.add(new JBinaryTreePanel("Year", "Age"));
             frame.setVisible(true);
         });
     }
