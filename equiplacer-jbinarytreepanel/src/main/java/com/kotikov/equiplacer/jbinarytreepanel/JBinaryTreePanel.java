@@ -1,6 +1,6 @@
 package com.kotikov.equiplacer.jbinarytreepanel;
 
-import com.kotikov.equiplacer.jbinarytreepanel.listener.JBinaryTreePanelMouseWheelListener;
+import com.kotikov.equiplacer.jbinarytreepanel.listener.JBinaryTreePanelMouseListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,13 +26,18 @@ public class JBinaryTreePanel extends JPanel {
     private final String yAxisTitle;
     private final Font axisTitleFont;
 
+    private int offsetX;
+    private int offsetY;
     private int delta = 30;
 
     public JBinaryTreePanel(String xAxisTitle, String yAxisTitle) {
         this.xAxisTitle = xAxisTitle;
         this.yAxisTitle = yAxisTitle;
         axisTitleFont = new Font(Font.MONOSPACED, Font.BOLD, 20);
-        addMouseWheelListener(new JBinaryTreePanelMouseWheelListener(this));
+        JBinaryTreePanelMouseListener mouseListener = new JBinaryTreePanelMouseListener(this);
+        addMouseWheelListener(mouseListener);
+        addMouseMotionListener(mouseListener);
+        addMouseListener(mouseListener);
     }
 
     @Override
@@ -83,36 +88,54 @@ public class JBinaryTreePanel extends JPanel {
         Stroke oldStroke = graphics2D.getStroke();
         Color oldColor = graphics2D.getColor();
 
-        for (int x = delta, value = 1; x < getWidth() - 2 * GRID_PADDING; x += delta, value++) {
-            graphics2D.setStroke(GRID_LINE_STROKE);
-            graphics2D.setColor(GRID_LINE_COLOR);
-            graphics2D.drawLine(x + GRID_PADDING, GRID_PADDING, x + GRID_PADDING, getHeight() - GRID_PADDING);
-            graphics2D.setStroke(VALUE_LINE_STROKE);
-            graphics2D.setColor(VALUE_LINE_COLOR);
-            graphics2D.drawLine(x + GRID_PADDING, getHeight() - GRID_PADDING + 5,
-                    x + GRID_PADDING, getHeight() - GRID_PADDING - 5);
-
-            FontMetrics fontMetrics = graphics2D.getFontMetrics();
-            String valueStr = String.valueOf(value);
-            graphics2D.drawString(valueStr, x + GRID_PADDING - fontMetrics.stringWidth(valueStr) / 2,
-                    getHeight() - GRID_PADDING + 30);
+        int firstValueX = -offsetX / delta;
+        int firstValueY = -offsetY / (delta - 10);
+        if (offsetX < 0) {
+            firstValueX++;
         }
-        for (int y = getHeight() - delta + 10 - 2 * GRID_PADDING, value = 1; y > 0; y -= delta - 10, value++) {
-            graphics2D.setStroke(GRID_LINE_STROKE);
-            graphics2D.setColor(GRID_LINE_COLOR);
-            graphics2D.drawLine(GRID_PADDING, y + GRID_PADDING, getWidth() - GRID_PADDING, y + GRID_PADDING);
-            graphics2D.setStroke(VALUE_LINE_STROKE);
-            graphics2D.setColor(VALUE_LINE_COLOR);
-            graphics2D.drawLine(GRID_PADDING - 5, y + GRID_PADDING, GRID_PADDING + 5, y + GRID_PADDING);
-
-            FontMetrics fontMetrics = graphics2D.getFontMetrics();
-            String valueStr = String.valueOf(value);
-            graphics2D.drawString(valueStr, GRID_PADDING - 25 - fontMetrics.stringWidth(valueStr) / 2,
-                    y + GRID_PADDING + fontMetrics.getHeight() / 2 - 3);
+        if (offsetY < 0) {
+            firstValueY++;
+        }
+        int firstX = offsetX + firstValueX * delta;
+        int firstY = -offsetY - firstValueY * (delta - 10) + getHeight() - 2 * GRID_PADDING;
+        for (int x = firstX, value = firstValueX; x < getWidth() - 2 * GRID_PADDING; x += delta, value++) {
+            drawVerticalGridLines(graphics2D, x, value);
+        }
+        for (int y = firstY, value = firstValueY; y > 0; y -= delta - 10, value++) {
+            drawHorizontalGridLines(graphics2D, y, value);
         }
 
         graphics2D.setStroke(oldStroke);
         graphics2D.setColor(oldColor);
+    }
+
+    private void drawVerticalGridLines(Graphics2D graphics2D, int x, int value) {
+        graphics2D.setStroke(GRID_LINE_STROKE);
+        graphics2D.setColor(GRID_LINE_COLOR);
+        graphics2D.drawLine(x + GRID_PADDING, GRID_PADDING, x + GRID_PADDING, getHeight() - GRID_PADDING);
+        graphics2D.setStroke(VALUE_LINE_STROKE);
+        graphics2D.setColor(VALUE_LINE_COLOR);
+        graphics2D.drawLine(x + GRID_PADDING, getHeight() - GRID_PADDING + 5,
+                x + GRID_PADDING, getHeight() - GRID_PADDING - 5);
+
+        FontMetrics fontMetrics = graphics2D.getFontMetrics();
+        String valueStr = String.valueOf(value);
+        graphics2D.drawString(valueStr, x + GRID_PADDING - fontMetrics.stringWidth(valueStr) / 2,
+                getHeight() - GRID_PADDING + 30);
+    }
+
+    private void drawHorizontalGridLines(Graphics2D graphics2D, int y, int value) {
+        graphics2D.setStroke(GRID_LINE_STROKE);
+        graphics2D.setColor(GRID_LINE_COLOR);
+        graphics2D.drawLine(GRID_PADDING, y + GRID_PADDING, getWidth() - GRID_PADDING, y + GRID_PADDING);
+        graphics2D.setStroke(VALUE_LINE_STROKE);
+        graphics2D.setColor(VALUE_LINE_COLOR);
+        graphics2D.drawLine(GRID_PADDING - 5, y + GRID_PADDING, GRID_PADDING + 5, y + GRID_PADDING);
+
+        FontMetrics fontMetrics = graphics2D.getFontMetrics();
+        String valueStr = String.valueOf(value);
+        graphics2D.drawString(valueStr, GRID_PADDING - 25 - fontMetrics.stringWidth(valueStr) / 2,
+                y + GRID_PADDING + fontMetrics.getHeight() / 2 - 3);
     }
 
     public int getDelta() {
@@ -121,5 +144,21 @@ public class JBinaryTreePanel extends JPanel {
 
     public void setDelta(int delta) {
         this.delta = Math.max(delta, 20);
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public void setOffsetX(int offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
     }
 }
