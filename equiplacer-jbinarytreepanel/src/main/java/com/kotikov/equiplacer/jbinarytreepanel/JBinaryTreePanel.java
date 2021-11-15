@@ -31,6 +31,7 @@ public class JBinaryTreePanel extends JPanel {
     private int delta = 30;
 
     public JBinaryTreePanel(String xAxisTitle, String yAxisTitle) {
+        super();
         this.xAxisTitle = xAxisTitle;
         this.yAxisTitle = yAxisTitle;
         axisTitleFont = new Font(Font.MONOSPACED, Font.BOLD, 20);
