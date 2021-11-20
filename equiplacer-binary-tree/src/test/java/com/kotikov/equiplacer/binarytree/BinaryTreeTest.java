@@ -98,4 +98,14 @@ class BinaryTreeTest {
         assertEquals(0, binaryTree2.size());
         assertEquals(0, binaryTree3.size());
     }
+
+    @Test
+    public void getDepth() {
+        assertEquals(0, binaryTree1.getRootNode().getDepth());
+        assertEquals(1, binaryTree1.getRootNode().getLeftChild().getDepth());
+        assertEquals(1, binaryTree1.getRootNode().getRightChild().getDepth());
+        assertEquals(2, binaryTree1.getRootNode().getLeftChild().getRightChild().getDepth());
+        assertEquals(4,
+                binaryTree1.getRootNode().getLeftChild().getRightChild().getLeftChild().getLeftChild().getDepth());
+    }
 }

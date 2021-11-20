@@ -72,6 +72,13 @@ public class BinaryTree<T> implements Iterable<T> {
             this.parent = parent;
         }
 
+        public int getDepth() {
+            if (parent == null) {
+                return 0;
+            }
+            return parent.getDepth() + 1;
+        }
+
         public Node addLeftChild(T child) {
             leftChild = new Node(child, this);
             size++;
