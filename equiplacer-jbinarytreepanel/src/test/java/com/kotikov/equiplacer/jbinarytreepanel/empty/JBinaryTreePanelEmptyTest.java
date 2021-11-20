@@ -1,9 +1,11 @@
-package com.kotikov.equiplacer.jbinarytreepanel;
+package com.kotikov.equiplacer.jbinarytreepanel.empty;
+
+import com.kotikov.equiplacer.jbinarytreepanel.JBinaryTreePanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-class JBinaryTreePanelTest {
+class JBinaryTreePanelEmptyTest {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
@@ -11,8 +13,7 @@ class JBinaryTreePanelTest {
             frame.setSize(500, 500);
             frame.setLocationRelativeTo(null);
             frame.setLayout(new GridLayout(1, 1));
-            JBinaryTreePanel<Integer> binaryTreePanel = new JBinaryTreePanel<>("Year", "Age");
-            frame.add(binaryTreePanel);
+            frame.add(new JBinaryTreePanel<Integer>("Year", "Age"));
             frame.setVisible(true);
         });
     }
