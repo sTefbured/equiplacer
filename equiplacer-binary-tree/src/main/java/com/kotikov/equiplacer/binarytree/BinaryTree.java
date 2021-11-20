@@ -2,7 +2,7 @@ package com.kotikov.equiplacer.binarytree;
 
 import java.util.Iterator;
 
-public class BinaryTree<T> implements Iterable<T> {
+public class BinaryTree<T> implements Iterable<BinaryTree<T>.Node> {
     private Node rootNode;
     private int size;
 
@@ -30,7 +30,7 @@ public class BinaryTree<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<BinaryTree<T>.Node> iterator() {
         return new BinaryTreeIterator<>(this);
     }
 

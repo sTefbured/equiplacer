@@ -8,7 +8,7 @@ import java.util.Iterator;
  *
  * @param <T> type of stored data
  */
-public class BinaryTreeIterator<T> implements Iterator<T> {
+public class BinaryTreeIterator<T> implements Iterator<BinaryTree<T>.Node> {
     private final BinaryTree<T>.Node last;
 
     private BinaryTree<T>.Node current;
@@ -35,8 +35,8 @@ public class BinaryTreeIterator<T> implements Iterator<T> {
     }
 
     @Override
-    public T next() {
-        return getCurrent().getData();
+    public BinaryTree<T>.Node next() {
+        return getCurrent();
     }
 
     private BinaryTree<T>.Node findLast(BinaryTree<T>.Node rootNode) {
