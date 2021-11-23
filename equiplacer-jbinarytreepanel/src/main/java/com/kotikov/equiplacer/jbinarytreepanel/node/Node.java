@@ -21,7 +21,7 @@ public class Node<T extends Number> extends JComponent {
         this.diameter = diameter;
         setBackground(backgroundColor);
         setSize(diameter, diameter);
-        shape = new Ellipse2D.Double(0, 0, diameter, diameter);
+        shape = new Ellipse2D.Double(0, 0, diameter - 2, diameter - 2);
     }
 
     public Node(T value, int diameter) {
@@ -44,7 +44,7 @@ public class Node<T extends Number> extends JComponent {
         String valueStr = String.valueOf(value);
         int textWidth = fontMetrics.stringWidth(valueStr);
         int textHeight = fontMetrics.getHeight();
-        graphics2D.drawString(valueStr, diameter / 2 - textWidth / 2, diameter / 2 + textHeight / 4);
+        graphics2D.drawString(valueStr, diameter / 2 - textWidth / 2 - 1, diameter / 2 + textHeight / 4 - 1);
     }
 
     public T getValue() {

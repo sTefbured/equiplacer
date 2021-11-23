@@ -1,4 +1,4 @@
-package com.kotikov.equiplacer.jbinarytreepanel.listener;
+package com.kotikov.equiplacer.jbinarytreepanel.listener.impl;
 
 import com.kotikov.equiplacer.jbinarytreepanel.JBinaryTreePanel;
 

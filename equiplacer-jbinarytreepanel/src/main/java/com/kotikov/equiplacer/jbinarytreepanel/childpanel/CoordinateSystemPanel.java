@@ -1,12 +1,10 @@
 package com.kotikov.equiplacer.jbinarytreepanel.childpanel;
 
-import com.kotikov.equiplacer.jbinarytreepanel.listener.CoordinateSystemPanelMouseListener;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class CoordinateSystemPanel extends JPanel {
+public class CoordinateSystemPanel extends JPanel implements JBinaryTreeChildPanel {
     private static final int AXIS_LINE_WIDTH = 6;
     private static final Color AXIS_LINE_COLOR = Color.BLACK;
     private static final Stroke AXIS_LINE_STROKE = new BasicStroke(AXIS_LINE_WIDTH);
@@ -24,18 +22,15 @@ public class CoordinateSystemPanel extends JPanel {
 
     private int offsetX;
     private int offsetY;
-    private int delta = 30;
+    private int delta;
 
-    public CoordinateSystemPanel(String xAxisTitle, String yAxisTitle) {
+    public CoordinateSystemPanel(String xAxisTitle, String yAxisTitle, int delta) {
         super();
         this.xAxisTitle = xAxisTitle;
         this.yAxisTitle = yAxisTitle;
+        this.delta = delta;
+        setOpaque(false);
         axisTitleFont = new Font(Font.MONOSPACED, Font.BOLD, 20);
-        setBackground(Color.ORANGE);
-        CoordinateSystemPanelMouseListener mouseListener = new CoordinateSystemPanelMouseListener(this);
-        addMouseWheelListener(mouseListener);
-        addMouseMotionListener(mouseListener);
-        addMouseListener(mouseListener);
     }
 
     @Override

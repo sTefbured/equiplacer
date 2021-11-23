@@ -1,4 +1,4 @@
-package com.kotikov.equiplacer.jbinarytreepanel;
+package com.kotikov.equiplacer.jbinarytreepanel.childpanel;
 
 import com.kotikov.equiplacer.binarytree.BinaryTree;
 import com.kotikov.equiplacer.jbinarytreepanel.node.Node;
@@ -6,7 +6,7 @@ import com.kotikov.equiplacer.jbinarytreepanel.node.Node;
 import javax.swing.*;
 import java.awt.*;
 
-class JBinaryTreePanelTest {
+class TreePanelTest {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
@@ -15,12 +15,11 @@ class JBinaryTreePanelTest {
             frame.setLocationRelativeTo(null);
             frame.setLayout(new GridLayout(1, 1));
 
-            BinaryTree<Node<Integer>> tree = new BinaryTree<>(new Node<>(3, 30));
-            tree.getRootNode().addLeftChild(new Node<>(4, 30)).addRightChild(new Node<>(1, 30));
-            tree.getRootNode().addRightChild(new Node<>(1, 30));
+            BinaryTree<Node<Integer>> tree = new BinaryTree<>(new Node<>(3, 50));
+            tree.getRootNode().addLeftChild(new Node<>(4, 50)).addRightChild(new Node<>(1, 50));
+            tree.getRootNode().addRightChild(new Node<>(1, 50));
 
-            JBinaryTreePanel<Integer> binaryTreePanel = new JBinaryTreePanel<>(tree, "Year", "Age");
-            frame.add(binaryTreePanel);
+            frame.add(new TreePanel<>(tree, 30));
             frame.setVisible(true);
         });
     }
