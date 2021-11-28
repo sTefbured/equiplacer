@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class CoordinateSystemPanel extends JPanel implements JBinaryTreeChildPanel {
+    private static final double Y_AXIS_TITLE_ROTATION_ANGLE = -Math.PI / 2;
     private static final int AXIS_LINE_WIDTH = 6;
     private static final Color AXIS_LINE_COLOR = Color.BLACK;
     private static final Stroke AXIS_LINE_STROKE = new BasicStroke(AXIS_LINE_WIDTH);
@@ -63,12 +64,14 @@ public class CoordinateSystemPanel extends JPanel implements JBinaryTreeChildPan
         FontMetrics axisTitleFontMetrics = graphics2D.getFontMetrics();
         int xAxisTitleWidth = axisTitleFontMetrics.stringWidth(xAxisTitle);
         int yAxisTitleWidth = axisTitleFontMetrics.stringWidth(yAxisTitle);
+        int yAxisTitleHeight = axisTitleFontMetrics.getHeight();
 
         graphics2D.drawString(xAxisTitle, getWidth() / 2 - xAxisTitleWidth / 2, getHeight() - 20);
-        graphics2D.setTransform(AffineTransform.getQuadrantRotateInstance(3));
-        graphics2D.drawString(yAxisTitle, -getHeight() / 2 - yAxisTitleWidth / 2, 30);
-        graphics2D.setTransform(AffineTransform.getQuadrantRotateInstance(1));
-
+        AffineTransform oldTransform = graphics2D.getTransform();
+        graphics2D.translate(20, getHeight() / 2.0);
+        graphics2D.rotate(Y_AXIS_TITLE_ROTATION_ANGLE, 0, 0);
+        graphics2D.drawString(yAxisTitle, -yAxisTitleWidth / 2,  yAxisTitleHeight / 2);
+        graphics2D.setTransform(oldTransform);
         graphics2D.setFont(oldFont);
     }
 
