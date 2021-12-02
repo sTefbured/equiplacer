@@ -2,9 +2,10 @@ package com.kotikov.equiplacer.jbinarytreepanel.listener.impl;
 
 import com.kotikov.equiplacer.jbinarytreepanel.JBinaryTreePanel;
 
-import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
+import static com.kotikov.equiplacer.jbinarytreepanel.util.JBinaryTreePanelConstants.COORDINATE_SYSTEM_PADDING;
 
 public class JBinaryTreePanelComponentListener extends ComponentAdapter {
     private final JBinaryTreePanel<? extends Number> panel;
@@ -15,8 +16,10 @@ public class JBinaryTreePanelComponentListener extends ComponentAdapter {
 
     @Override
     public void componentResized(ComponentEvent e) {
-        for (Component component : panel.getComponents()) {
-            component.setSize(panel.getSize());
-        }
+        var coordinateSystemPanel = panel.getCoordinateSystemPanel();
+        var newWidth = panel.getWidth() - 2 * COORDINATE_SYSTEM_PADDING;
+        var newHeight = panel.getHeight() - 2 * COORDINATE_SYSTEM_PADDING;
+        coordinateSystemPanel.setSize(newWidth, newHeight);
+        panel.revalidate();
     }
 }

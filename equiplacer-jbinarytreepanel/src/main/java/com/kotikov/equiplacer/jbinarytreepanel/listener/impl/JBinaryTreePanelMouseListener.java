@@ -19,30 +19,23 @@ public class JBinaryTreePanelMouseListener implements MouseListener, MouseMotion
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (!(e.getSource() instanceof JBinaryTreePanel)) {
+        if (!(e.getSource() instanceof JBinaryTreePanel<? extends Number> source)) {
             throw new IllegalArgumentException("Illegal event source: JBinaryTreePanel object expected, but "
                     + e.getSource().getClass().getName() + " provided.");
         }
-        JBinaryTreePanel<? extends Number> source = (JBinaryTreePanel<? extends Number>) e.getSource();
-        int newDelta = source.getDelta();
-        if (e.getWheelRotation() > 0) {
-            newDelta += DELTA_STEP;
-        } else {
-            newDelta -= DELTA_STEP;
-        }
-        source.setDelta(newDelta);
+        source.incrementDelta(e.getWheelRotation() > 0 ? DELTA_STEP : -DELTA_STEP);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (!(e.getSource() instanceof JBinaryTreePanel)) {
+        if (!(e.getSource() instanceof JBinaryTreePanel<? extends Number> source)) {
             throw new IllegalArgumentException("Illegal event source: JBinaryTreePanel object expected, but "
                     + e.getSource().getClass().getName() + " provided.");
         }
-        JBinaryTreePanel<? extends Number> source = (JBinaryTreePanel<? extends Number>) e.getSource();
         int offsetX = source.getOffsetX() + e.getX() - lastX;
         int offsetY = source.getOffsetY() - e.getY() + lastY;
-        source.setOffset(offsetX, offsetY);
+        source.setOffsetX(offsetX);
+        source.setOffsetY(offsetY);
         lastX = e.getX();
         lastY = e.getY();
     }

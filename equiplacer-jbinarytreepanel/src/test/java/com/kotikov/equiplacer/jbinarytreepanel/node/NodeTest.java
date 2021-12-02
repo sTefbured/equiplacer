@@ -10,8 +10,10 @@ class NodeTest {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(500, 500);
             frame.setLocationRelativeTo(null);
-            frame.setLayout(new GridLayout(1, 1));
-            frame.add(new Node<>(2, 40));
+            frame.setLayout(new GridLayout(3, 3));
+            for (int i = 0; i < 9; i++) {
+                frame.add(new Node<>(2, 40));
+            }
             frame.setVisible(true);
         });
     }

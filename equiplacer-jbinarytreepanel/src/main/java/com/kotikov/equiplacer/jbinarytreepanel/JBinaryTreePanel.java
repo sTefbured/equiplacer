@@ -2,68 +2,77 @@ package com.kotikov.equiplacer.jbinarytreepanel;
 
 import com.kotikov.equiplacer.binarytree.BinaryTree;
 import com.kotikov.equiplacer.jbinarytreepanel.childpanel.CoordinateSystemPanel;
-import com.kotikov.equiplacer.jbinarytreepanel.childpanel.TreePanel;
-import com.kotikov.equiplacer.jbinarytreepanel.listener.JBinaryTreePropertyChangeListener;
-import com.kotikov.equiplacer.jbinarytreepanel.listener.JBinaryTreePropertyChangeListener.DeltaChangeProps;
-import com.kotikov.equiplacer.jbinarytreepanel.listener.JBinaryTreePropertyChangeListener.OffsetChangeProps;
-import com.kotikov.equiplacer.jbinarytreepanel.listener.JBinaryTreePropertyChangeListener.TreeChangeProps;
-import com.kotikov.equiplacer.jbinarytreepanel.listener.impl.CoordinateSystemPanelBinaryTreePropertyChangeListener;
 import com.kotikov.equiplacer.jbinarytreepanel.listener.impl.JBinaryTreePanelComponentListener;
 import com.kotikov.equiplacer.jbinarytreepanel.listener.impl.JBinaryTreePanelMouseListener;
-import com.kotikov.equiplacer.jbinarytreepanel.listener.impl.TreePanelBinaryTreePropertyChangeListener;
 import com.kotikov.equiplacer.jbinarytreepanel.node.Node;
 
 import javax.swing.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 
-public class JBinaryTreePanel<T extends Number> extends JLayeredPane {
-    private BinaryTree<Node<T>> tree;
-    private int delta = 30;
-    private int offsetX = 0;
-    private int offsetY = 0;
-    private final List<JBinaryTreePropertyChangeListener<T>> propertyChangeListeners;
+import static com.kotikov.equiplacer.jbinarytreepanel.util.JBinaryTreePanelConstants.COORDINATE_SYSTEM_PADDING;
 
-    public JBinaryTreePanel(String xAxisTitle, String yAxisTitle) {
-        super();
-        CoordinateSystemPanel coordinateSystemPanel = new CoordinateSystemPanel(xAxisTitle, yAxisTitle, delta);
-        add(coordinateSystemPanel, JLayeredPane.DEFAULT_LAYER);
-        propertyChangeListeners = new LinkedList<>();
-        propertyChangeListeners.add(new CoordinateSystemPanelBinaryTreePropertyChangeListener<>(coordinateSystemPanel));
+public class JBinaryTreePanel<T extends Number> extends JPanel {
+    private static final double Y_AXIS_TITLE_ROTATION_ANGLE = -Math.PI / 2;
 
-        JBinaryTreePanelMouseListener mouseListener = new JBinaryTreePanelMouseListener();
-        addMouseWheelListener(mouseListener);
-        addMouseMotionListener(mouseListener);
-        addMouseListener(mouseListener);
-        addComponentListener(new JBinaryTreePanelComponentListener(this));
-    }
+    private final String xAxisTitle;
+    private final String yAxisTitle;
+    private final Font axisTitleFont;
+
+    private int offsetX;
+    private int offsetY;
+
+    private CoordinateSystemPanel<T> coordinateSystemPanel;
 
     public JBinaryTreePanel(BinaryTree<Node<T>> tree, String xAxisTitle, String yAxisTitle) {
-        this(xAxisTitle, yAxisTitle);
-        this.tree = tree;
-        TreePanel<T> treePanel = new TreePanel<>(tree, delta);
-        add(treePanel, new Integer(1));
-        propertyChangeListeners.add(new TreePanelBinaryTreePropertyChangeListener<>(treePanel));
+        super();
+        setLayout(null);
+        this.xAxisTitle = xAxisTitle;
+        this.yAxisTitle = yAxisTitle;
+        setBackground(Color.WHITE);
+        addComponentListener(new JBinaryTreePanelComponentListener(this));
+        var mouseListener = new JBinaryTreePanelMouseListener();
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseListener);
+        addMouseWheelListener(mouseListener);
+        coordinateSystemPanel = new CoordinateSystemPanel<>(tree);
+        coordinateSystemPanel.setBounds(COORDINATE_SYSTEM_PADDING, COORDINATE_SYSTEM_PADDING,
+                getWidth() - 2 * COORDINATE_SYSTEM_PADDING, getHeight() - 2 * COORDINATE_SYSTEM_PADDING);
+        add(coordinateSystemPanel);
+        axisTitleFont = new Font(Font.MONOSPACED, Font.BOLD, 20);
     }
 
-    public BinaryTree<Node<T>> getTree() {
-        return tree;
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D graphics2D = (Graphics2D) g;
+        drawAxisTitles(graphics2D);
     }
 
-    public void setTree(BinaryTree<Node<T>> tree) {
-        TreeChangeProps<T> treeChangeProps = new TreeChangeProps<>(this.tree, tree);
-        this.tree = tree;
-        propertyChangeListeners.forEach(l -> l.treeChanged(treeChangeProps));
+    private void drawAxisTitles(Graphics2D graphics2D) {
+        Font oldFont = graphics2D.getFont();
+        graphics2D.setFont(axisTitleFont);
+
+        FontMetrics axisTitleFontMetrics = graphics2D.getFontMetrics();
+        int xAxisTitleWidth = axisTitleFontMetrics.stringWidth(xAxisTitle);
+        int yAxisTitleWidth = axisTitleFontMetrics.stringWidth(yAxisTitle);
+        int yAxisTitleHeight = axisTitleFontMetrics.getHeight();
+
+        graphics2D.drawString(xAxisTitle, getWidth() / 2 - xAxisTitleWidth / 2, getHeight() - 20);
+        AffineTransform oldTransform = graphics2D.getTransform();
+        graphics2D.translate(20, getHeight() / 2.0);
+        graphics2D.rotate(Y_AXIS_TITLE_ROTATION_ANGLE, 0, 0);
+        graphics2D.drawString(yAxisTitle, -yAxisTitleWidth / 2, yAxisTitleHeight / 2);
+        graphics2D.setTransform(oldTransform);
+        graphics2D.setFont(oldFont);
     }
 
-    public int getDelta() {
-        return delta;
+    public CoordinateSystemPanel<T> getCoordinateSystemPanel() {
+        return coordinateSystemPanel;
     }
 
-    public void setDelta(int delta) {
-        DeltaChangeProps deltaChangeProps = new DeltaChangeProps(this.delta, delta);
-        this.delta = delta;
-        propertyChangeListeners.forEach(l -> l.deltaChanged(deltaChangeProps));
+    public void setCoordinateSystemPanel(CoordinateSystemPanel<T> coordinateSystemPanel) {
+        this.coordinateSystemPanel = coordinateSystemPanel;
     }
 
     public int getOffsetX() {
@@ -71,7 +80,10 @@ public class JBinaryTreePanel<T extends Number> extends JLayeredPane {
     }
 
     public void setOffsetX(int offsetX) {
-        setOffset(offsetX, this.offsetY);
+        this.offsetX = offsetX;
+        coordinateSystemPanel.setOffsetX(offsetX);
+        coordinateSystemPanel.revalidate();
+        coordinateSystemPanel.repaint();
     }
 
     public int getOffsetY() {
@@ -79,13 +91,16 @@ public class JBinaryTreePanel<T extends Number> extends JLayeredPane {
     }
 
     public void setOffsetY(int offsetY) {
-        setOffset(this.offsetX, offsetY);
+        this.offsetY = offsetY;
+        coordinateSystemPanel.setOffsetY(offsetY);
+        coordinateSystemPanel.revalidate();
+        coordinateSystemPanel.repaint();
     }
 
-    public void setOffset(int offsetX, int offsetY) {
-        OffsetChangeProps offsetChangeProps = new OffsetChangeProps(offsetX, offsetY, this.offsetX, this.offsetY);
-        propertyChangeListeners.forEach(l -> l.offsetChanged(offsetChangeProps));
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
+    public void incrementDelta(int incrementValue) {
+        coordinateSystemPanel.setDeltaX(coordinateSystemPanel.getDeltaX() + incrementValue);
+        coordinateSystemPanel.setDeltaY(coordinateSystemPanel.getDeltaY() + incrementValue);
+        coordinateSystemPanel.revalidate();
+        coordinateSystemPanel.repaint();
     }
 }

@@ -12,8 +12,8 @@
     <artifactId>equiplacer-desktop-client</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <apacheCommons.version>3.12.0</apacheCommons.version>
         <equiplacerGraph.version>1.0-SNAPSHOT</equiplacerGraph.version>
     </properties>

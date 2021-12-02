@@ -1,10 +1,12 @@
 package com.kotikov.equiplacer.jbinarytreepanel.layout;
 
 import com.kotikov.equiplacer.binarytree.BinaryTree;
-import com.kotikov.equiplacer.jbinarytreepanel.childpanel.TreePanel;
+import com.kotikov.equiplacer.jbinarytreepanel.childpanel.CoordinateSystemPanel;
 import com.kotikov.equiplacer.jbinarytreepanel.node.Node;
 
 import java.awt.*;
+
+import static com.kotikov.equiplacer.jbinarytreepanel.util.JBinaryTreePanelConstants.GRID_PADDING;
 
 //TODO: replace hardcoded values with constants or variables
 public class CoordinatesLayout implements LayoutManager {
@@ -22,19 +24,19 @@ public class CoordinatesLayout implements LayoutManager {
 
     @Override
     public Dimension preferredLayoutSize(Container parent) {
-        if (!(parent instanceof TreePanel)) {
-            throw new IllegalArgumentException("TreePanel container expected but "
+        if (!(parent instanceof CoordinateSystemPanel<? extends Number> panel)) {
+            throw new IllegalArgumentException(CoordinateSystemPanel.class.getName() + " container expected but "
                     + parent.getClass().getName() + " provided.");
         }
-        TreePanel<? extends Number> treePanel = (TreePanel<? extends Number>) parent;
-        int delta = treePanel.getDelta();
+        int deltaX = panel.getDeltaX();
+        int deltaY = panel.getDeltaY();
         int width = 0;
         int height;
         Number maxValue = null;
         Number minValue = null;
 
-        for (BinaryTree<? extends Node<? extends Number>>.Node binaryTreeNode : treePanel.getTree()) {
-            width += delta;
+        for (BinaryTree<? extends Node<? extends Number>>.Node binaryTreeNode : panel.getTree()) {
+            width += deltaX;
             if (maxValue == null || maxValue.doubleValue() < binaryTreeNode.getData().getValue().doubleValue()) {
                 maxValue = binaryTreeNode.getData().getValue();
             }
@@ -45,7 +47,7 @@ public class CoordinatesLayout implements LayoutManager {
         if (maxValue == null || minValue == null) {
             throw new RuntimeException("Tree is empty.");
         }
-        height = ((int) (maxValue.doubleValue() - minValue.doubleValue()) + 2) * delta;
+        height = ((int) (maxValue.doubleValue() - minValue.doubleValue()) + 2) * deltaY;
         height += 160;
         width += 160;
 
@@ -59,17 +61,17 @@ public class CoordinatesLayout implements LayoutManager {
 
     @Override
     public void layoutContainer(Container parent) {
-        if (!(parent instanceof TreePanel)) {
-            throw new IllegalArgumentException("TreePanel container expected but "
+        if (!(parent instanceof CoordinateSystemPanel<? extends Number> coordinateSystemPanel)) {
+            throw new IllegalArgumentException(CoordinateSystemPanel.class.getName() + " container expected but "
                     + parent.getClass().getName() + " provided.");
         }
-        TreePanel<? extends Number> treePanel = (TreePanel<? extends Number>) parent;
-        int delta = treePanel.getDelta();
-        for (BinaryTree<? extends Node<? extends Number>>.Node binaryTreeNode : treePanel.getTree()) {
+        int deltaX = coordinateSystemPanel.getDeltaX();
+        int deltaY = coordinateSystemPanel.getDeltaY();
+        for (BinaryTree<? extends Node<? extends Number>>.Node binaryTreeNode : coordinateSystemPanel.getTree()) {
             Node<? extends Number> node = binaryTreeNode.getData();
-            int centerX = binaryTreeNode.getDepth() * delta + 80 + treePanel.getOffsetX(); // 80 - GRID_PADDING
-            int centerY = (int) (treePanel.getHeight() - node.getValue().doubleValue() * (delta - 10))
-                    - 80 - treePanel.getOffsetY();
+            int centerX = binaryTreeNode.getDepth() * deltaX + coordinateSystemPanel.getOffsetX() + GRID_PADDING;
+            int centerY = (int) (coordinateSystemPanel.getHeight() - node.getValue().doubleValue() * deltaY)
+                     - coordinateSystemPanel.getOffsetY() - GRID_PADDING;
             int x = centerX - node.getWidth() / 2;
             int y = centerY - node.getHeight() / 2;
             node.setBounds(x, y, node.getWidth(), node.getHeight());
