@@ -21,6 +21,7 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
     private static final Color GRID_LINE_COLOR = Color.BLUE;
     private static final int MIN_DELTA_X = 30;
     private static final int MIN_DELTA_Y = 20;
+    private static final Color CONNECTION_COLOR = Color.BLACK;
 
     private BinaryTree<Node<T>> tree;
     private int offsetX;
@@ -46,6 +47,32 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         Graphics2D graphics2D = (Graphics2D) g;
         drawGrid(graphics2D);
         drawAxes(graphics2D);
+        drawConnectionsBetweenNodes(graphics2D);
+    }
+
+    private void drawConnectionsBetweenNodes(Graphics2D graphics2D) {
+        var oldColor = graphics2D.getColor();
+        graphics2D.setColor(CONNECTION_COLOR);
+        tree.forEach(node -> {
+            var parentBounds = node.getData().getBounds();
+            var leftChild = node.getLeftChild();
+            var rightChild = node.getRightChild();
+            if (leftChild != null) {
+                var leftChildBounds = leftChild.getData().getBounds();
+                drawConnection(graphics2D, (int)parentBounds.getCenterX(), (int)parentBounds.getCenterY(),
+                        (int)leftChildBounds.getCenterX(), (int)leftChildBounds.getCenterY());
+            }
+            if (rightChild != null) {
+                var rightChildBounds = rightChild.getData().getBounds();
+                drawConnection(graphics2D, (int)parentBounds.getCenterX(), (int)parentBounds.getCenterY(),
+                        (int)rightChildBounds.getCenterX(), (int)rightChildBounds.getCenterY());
+            }
+        });
+        graphics2D.setColor(oldColor);
+    }
+
+    private void drawConnection(Graphics2D graphics2D, int x1, int y1, int x2, int y2) {
+        graphics2D.drawLine(x1, y1, x2, y2);
     }
 
     private void drawAxes(Graphics2D graphics2D) {
