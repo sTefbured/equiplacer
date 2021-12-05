@@ -1,6 +1,9 @@
 package com.kotikov.equiplacer.binarytree;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Iterator;
+import java.util.Objects;
 
 public class BinaryTree<T> implements Iterable<BinaryTree<T>.Node> {
     private Node rootNode;
@@ -57,14 +60,36 @@ public class BinaryTree<T> implements Iterable<BinaryTree<T>.Node> {
         node.rightChild = null;
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(size).append(rootNode).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof BinaryTree<?> tree)) {
+            return false;
+        }
+        if (hashCode() != obj.hashCode()) {
+            return false;
+        }
+        return size == tree.size && rootNode.equals(tree.rootNode);
+    }
+
     public class Node {
         private Node leftChild;
         private Node rightChild;
         private Node parent;
         private T data;
+        private boolean isDataChanged;
+        private int hashCode;
 
         private Node(T data) {
             this.data = data;
+            isDataChanged = true;
         }
 
         private Node(T data, Node parent) {
@@ -82,12 +107,14 @@ public class BinaryTree<T> implements Iterable<BinaryTree<T>.Node> {
         public Node addLeftChild(T child) {
             leftChild = new Node(child, this);
             size++;
+            isDataChanged = true;
             return leftChild;
         }
 
         public Node addRightChild(T child) {
             rightChild = new Node(child, this);
             size++;
+            isDataChanged = true;
             return rightChild;
         }
 
@@ -107,8 +134,31 @@ public class BinaryTree<T> implements Iterable<BinaryTree<T>.Node> {
             return data;
         }
 
-        public void setData(T data) {
-            this.data = data;
+        @Override
+        public int hashCode() {
+            if (isDataChanged) {
+                hashCode = new HashCodeBuilder().append(leftChild)
+                        .append(rightChild).append(data).toHashCode();
+                isDataChanged = false;
+            }
+            return hashCode;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) {
+                return true;
+            }
+            if (!(obj instanceof BinaryTree<?>.Node node)) {
+                return false;
+            }
+            if (hashCode() != obj.hashCode()) {
+                return false;
+            }
+            return Objects.equals(leftChild, node.leftChild)
+                    && Objects.equals(rightChild, node.rightChild)
+                    && (parent == node.parent || Objects.equals(parent.data, node.parent.data))
+                    && Objects.equals(data, node.data);
         }
     }
 }

@@ -108,4 +108,40 @@ class BinaryTreeTest {
         assertEquals(4,
                 binaryTree1.getRootNode().getLeftChild().getRightChild().getLeftChild().getLeftChild().getDepth());
     }
+
+    @Test
+    public void hashCode_positive() {
+        var tree = new BinaryTree<>(2);
+        tree.getRootNode().addLeftChild(5).addRightChild(2).getParent().getParent().addRightChild(9).addRightChild(2);
+        var sameTree = new BinaryTree<>(2);
+        sameTree.getRootNode().addLeftChild(5).addRightChild(2).getParent().getParent().addRightChild(9).addRightChild(2);
+        assertEquals(tree.hashCode(), sameTree.hashCode());
+    }
+
+    @Test
+    public void hashCode_negative() {
+        var tree = new BinaryTree<>(2);
+        tree.getRootNode().addLeftChild(5).addRightChild(2).getParent().getParent().addRightChild(9).addRightChild(2);
+        var sameTree = new BinaryTree<>(2);
+        sameTree.getRootNode().addLeftChild(5).addRightChild(1).getParent().getParent().addRightChild(9).addRightChild(2);
+        assertNotEquals(tree.hashCode(), sameTree.hashCode());
+    }
+
+    @Test
+    public void equals_positive() {
+        var tree = new BinaryTree<>(2);
+        tree.getRootNode().addLeftChild(5).addRightChild(2).getParent().getParent().addRightChild(9).addRightChild(2);
+        var sameTree = new BinaryTree<>(2);
+        sameTree.getRootNode().addLeftChild(5).addRightChild(2).getParent().getParent().addRightChild(9).addRightChild(2);
+        assertEquals(tree, sameTree);
+    }
+
+    @Test
+    public void equals_negative() {
+        var tree = new BinaryTree<>(2);
+        tree.getRootNode().addLeftChild(5).addRightChild(21).getParent().getParent().addRightChild(9).addRightChild(2);
+        var sameTree = new BinaryTree<>(2);
+        sameTree.getRootNode().addLeftChild(5).addRightChild(2).getParent().getParent().addRightChild(9).addRightChild(2);
+        assertNotEquals(tree, sameTree);
+    }
 }

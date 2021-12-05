@@ -14,13 +14,14 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <equiplacerBinaryTree.version>1.0-SNAPSHOT</equiplacerBinaryTree.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${apacheCommons.version}</version>
+            <groupId>com.kotikov.equiplacer</groupId>
+            <artifactId>equiplacer-binary-tree</artifactId>
+            <version>${equiplacerBinaryTree.version}</version>
         </dependency>
     </dependencies>
 </project>

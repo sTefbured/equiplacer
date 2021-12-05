@@ -19,11 +19,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${apacheCommons.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.kotikov.equiplacer</groupId>
             <artifactId>equiplacer-jbinarytreepanel</artifactId>
             <version>${equiplacerJbinarytreepanel.version}</version>
