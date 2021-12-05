@@ -1,6 +1,8 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabbedpane;
 
 
+import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,20 +23,17 @@ public class TabbedPaneWrapper extends JPanel {
     }
 
     private void addNewTab() {
-        //TODO: change to a panel with input components
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("TRUE"));
-
-        var tabIndex = tabbedPane.getTabCount();
-        var title = "Tab " + (tabIndex + 1);
-        if (tabIndex == 1) {
-            title = "dfdgsggsdgdsfgdfgdsgdfsgfds 2";
-        }
-        tabbedPane.addTab(null, new JPanel());
         var tabComponent = new JPanel();
         tabComponent.setLayout(new BoxLayout(tabComponent, BoxLayout.X_AXIS));
         tabComponent.setOpaque(false);
+
+        var tabIndex = tabbedPane.getTabCount();
+        var title = "Tab " + (tabIndex + 1);
         tabComponent.add(new JLabel(title));
+
+        var contentPanel = new TabContentPanel(tabbedPane);
+        tabbedPane.addTab(null, contentPanel);
+
         var closeButtonWrapper = new JPanel();
         closeButtonWrapper.setOpaque(false);
         closeButtonWrapper.add(new TabCloseButton(tabbedPane, tabComponent));
