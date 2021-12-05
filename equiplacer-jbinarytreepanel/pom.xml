@@ -9,26 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>equiplacer-graph</artifactId>
+    <artifactId>equiplacer-jbinarytreepanel</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <apacheCommons.version>3.12.0</apacheCommons.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <equiplacerBinaryTree.version>1.0-SNAPSHOT</equiplacerBinaryTree.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${apacheCommons.version}</version>
+            <groupId>com.kotikov.equiplacer</groupId>
+            <artifactId>equiplacer-binary-tree</artifactId>
+            <version>${equiplacerBinaryTree.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
-        </dependency>
-
     </dependencies>
-
 </project>

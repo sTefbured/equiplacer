@@ -53,20 +53,20 @@ class BinaryTreeIteratorTest {
     @Test
     public void iterator_foreach_test() {
         int i = 0;
-        for (Integer value : binaryTree1) {
-            assertEquals(treeValues[i], value);
+        for (BinaryTree<Integer>.Node node : binaryTree1) {
+            assertEquals(treeValues[i], node.getData());
             i++;
         }
 
         i = 0;
-        for (Integer value : binaryTree2) {
-            assertEquals(treeValues[i], value);
+        for (BinaryTree<Integer>.Node node : binaryTree2) {
+            assertEquals(treeValues[i], node.getData());
             i++;
         }
 
         i = 0;
-        for (Integer value : binaryTree3) {
-            assertEquals(treeValues[i], value);
+        for (BinaryTree<Integer>.Node node : binaryTree3) {
+            assertEquals(treeValues[i], node.getData());
             i++;
         }
     }

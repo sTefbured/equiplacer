@@ -12,10 +12,9 @@
     <artifactId>equiplacer-desktop-client</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <apacheCommons.version>3.12.0</apacheCommons.version>
-        <equiplacerGraph.version>1.0-SNAPSHOT</equiplacerGraph.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <equiplacerJbinarytreepanel.version>1.0-SNAPSHOT</equiplacerJbinarytreepanel.version>
     </properties>
 
     <dependencies>
@@ -26,8 +25,8 @@
         </dependency>
         <dependency>
             <groupId>com.kotikov.equiplacer</groupId>
-            <artifactId>equiplacer-graph</artifactId>
-            <version>${equiplacerGraph.version}</version>
+            <artifactId>equiplacer-jbinarytreepanel</artifactId>
+            <version>${equiplacerJbinarytreepanel.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
