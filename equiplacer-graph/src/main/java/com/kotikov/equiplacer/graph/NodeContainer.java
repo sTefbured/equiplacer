@@ -2,7 +2,7 @@ package com.kotikov.equiplacer.graph;
 
 import java.util.*;
 
-class NodeContainer<T> {
+public class NodeContainer<T> {
     private int nextId = 1;
     private final Map<Integer, Node<T>> nodesPool;
 
@@ -26,7 +26,11 @@ class NodeContainer<T> {
         });
     }
 
-    public Set<Map.Entry<Integer,Node<T>>> getNodesPool() {
+    public Node<T> getNodeById(int id) {
+        return nodesPool.get(id);
+    }
+
+    public Set<Map.Entry<Integer, Node<T>>> getNodesPool() {
         return Collections.unmodifiableSet(nodesPool.entrySet());
     }
 }
