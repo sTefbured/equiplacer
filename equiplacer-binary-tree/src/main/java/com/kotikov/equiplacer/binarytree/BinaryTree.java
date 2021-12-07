@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Iterator;
 import java.util.Objects;
 
+@Deprecated
 public class BinaryTree<T> implements Iterable<BinaryTree<T>.Node> {
     private Node rootNode;
     private int size;

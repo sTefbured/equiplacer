@@ -8,6 +8,7 @@ import java.util.Iterator;
  *
  * @param <T> type of stored data
  */
+@Deprecated
 public class BinaryTreeIterator<T> implements Iterator<BinaryTree<T>.Node> {
     private final BinaryTree<T>.Node last;
 
