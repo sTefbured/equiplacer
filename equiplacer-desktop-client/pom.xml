@@ -14,14 +14,14 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <equiplacerJbinarytreepanel.version>1.0-SNAPSHOT</equiplacerJbinarytreepanel.version>
+        <equiplacer.jbinarytreeoanel.version>1.0-SNAPSHOT</equiplacer.jbinarytreeoanel.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.kotikov.equiplacer</groupId>
             <artifactId>equiplacer-jbinarytreepanel</artifactId>
-            <version>${equiplacerJbinarytreepanel.version}</version>
+            <version>${equiplacer.jbinarytreeoanel.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
