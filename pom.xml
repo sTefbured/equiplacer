@@ -12,7 +12,6 @@
     <modules>
         <module>equiplacer-core</module>
         <module>equiplacer-desktop-client</module>
-        <module>equiplacer-binary-tree</module>
         <module>equiplacer-jgraphpanel</module>
         <module>equiplacer-graph</module>
     </modules>

@@ -67,8 +67,8 @@ public class CoordinatesLayout implements LayoutManager {
         }
         int deltaX = coordinateSystemPanel.getDeltaX();
         int deltaY = coordinateSystemPanel.getDeltaY();
-        int internalOffsetX = 0;
         var layeredIterator = coordinateSystemPanel.getGraph().layeredIterator();
+        int internalOffsetX = 0;
         while (layeredIterator.hasNext()) {
             var layer = layeredIterator.next();
             int finalInternalOffsetX = internalOffsetX;

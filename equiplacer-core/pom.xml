@@ -18,10 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.kotikov.equiplacer</groupId>
-            <artifactId>equiplacer-binary-tree</artifactId>
-            <version>${equiplacerBinaryTree.version}</version>
-        </dependency>
+
     </dependencies>
 </project>
