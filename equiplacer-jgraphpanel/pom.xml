@@ -9,21 +9,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>equiplacer-desktop-client</artifactId>
+    <artifactId>equiplacer-jgraphpanel</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <equiplacer.jbinarytreeoanel.version>1.0-SNAPSHOT</equiplacer.jbinarytreeoanel.version>
+        <equiplacer.graph.version>1.0-SNAPSHOT</equiplacer.graph.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.kotikov.equiplacer</groupId>
-            <artifactId>equiplacer-jbinarytreepanel</artifactId>
-            <version>${equiplacer.jbinarytreeoanel.version}</version>
+            <artifactId>equiplacer-graph</artifactId>
+            <version>${equiplacer.graph.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 </project>
