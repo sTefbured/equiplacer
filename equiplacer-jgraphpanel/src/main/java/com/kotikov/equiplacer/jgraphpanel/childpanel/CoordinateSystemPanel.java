@@ -36,9 +36,7 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         this.graph = graph;
         this.deltaX = 30;
         this.deltaY = 20;
-        for (var node : graph) {
-            add(node.getData());
-        }
+        setGraph(graph);
     }
 
     @Override
@@ -141,7 +139,13 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
     }
 
     public void setGraph(Graph<NodeComponent<T>> graph) {
+        if (this.graph != null) {
+            this.graph.forEach(node -> remove(node.getData()));
+        }
         this.graph = graph;
+        if (graph != null) {
+            graph.forEach(node -> add(node.getData()));
+        }
     }
 
     public int getOffsetX() {

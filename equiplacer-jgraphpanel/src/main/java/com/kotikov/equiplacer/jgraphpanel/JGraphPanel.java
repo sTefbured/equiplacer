@@ -24,6 +24,10 @@ public class JGraphPanel<T extends Number> extends JPanel {
 
     private CoordinateSystemPanel<T> coordinateSystemPanel;
 
+    public JGraphPanel() {
+        this(null, null, null);
+    }
+
     public JGraphPanel(Graph<NodeComponent<T>> graph, String xAxisTitle, String yAxisTitle) {
         super();
         setLayout(null);
@@ -65,6 +69,10 @@ public class JGraphPanel<T extends Number> extends JPanel {
         graphics2D.drawString(yAxisTitle, -yAxisTitleWidth / 2, yAxisTitleHeight / 2);
         graphics2D.setTransform(oldTransform);
         graphics2D.setFont(oldFont);
+    }
+
+    public void setGraph(Graph<NodeComponent<T>> graph) {
+        coordinateSystemPanel.setGraph(graph);
     }
 
     public CoordinateSystemPanel<T> getCoordinateSystemPanel() {

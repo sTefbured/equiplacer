@@ -2,6 +2,7 @@ package com.kotikov.equiplacer.jgraphpanel;
 
 import com.kotikov.equiplacer.graph.Graph;
 import com.kotikov.equiplacer.jgraphpanel.node.NodeComponent;
+import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,5 +31,10 @@ class JGraphPanelTest {
             frame.add(graphPanel);
             frame.setVisible(true);
         });
+    }
+
+    @Test
+    public void notInitializedJGraphPanelTest() {
+        new JGraphPanel<Integer>();
     }
 }
