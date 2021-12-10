@@ -33,7 +33,6 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         super();
         setBackground(Color.WHITE);
         setLayout(new CoordinatesLayout());
-        this.graph = graph;
         this.deltaX = 30;
         this.deltaY = 20;
         setGraph(graph);
@@ -45,7 +44,9 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         Graphics2D graphics2D = (Graphics2D) g;
         drawGrid(graphics2D);
         drawAxes(graphics2D);
-        drawConnectionsBetweenNodes(graphics2D);
+        if (graph != null) {
+            drawConnectionsBetweenNodes(graphics2D);
+        }
     }
 
     private void drawConnectionsBetweenNodes(Graphics2D graphics2D) {

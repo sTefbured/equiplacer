@@ -65,6 +65,9 @@ public class CoordinatesLayout implements LayoutManager {
             throw new IllegalArgumentException(CoordinateSystemPanel.class.getName() + " container expected but "
                     + parent.getClass().getName() + " provided.");
         }
+        if (coordinateSystemPanel.getGraph() == null) {
+            return;
+        }
         int deltaX = coordinateSystemPanel.getDeltaX();
         int deltaY = coordinateSystemPanel.getDeltaY();
         var layeredIterator = coordinateSystemPanel.getGraph().layeredIterator();

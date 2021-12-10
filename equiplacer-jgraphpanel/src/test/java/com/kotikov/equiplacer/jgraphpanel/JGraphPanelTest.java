@@ -35,6 +35,6 @@ class JGraphPanelTest {
 
     @Test
     public void notInitializedJGraphPanelTest() {
-        new JGraphPanel<Integer>();
+        new JGraphPanel<Integer>("Year", "Age");
     }
 }
