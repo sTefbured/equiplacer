@@ -1,5 +1,7 @@
 package com.kotikov.equiplacer.core.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -39,6 +41,29 @@ public class EquipmentInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof EquipmentInformation that)) {
+            return false;
+        }
+
+        return new EqualsBuilder().append(maxAge, that.maxAge).append(yearsCount, that.yearsCount)
+                .append(currentAge, that.currentAge).append(equipmentAgesPerYear, that.equipmentAgesPerYear)
+                .append(equipmentCosts, that.equipmentCosts).append(maintenanceCosts, that.maintenanceCosts)
+                .append(residualCosts, that.residualCosts).append(incomes, that.incomes).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(maxAge).append(yearsCount)
+                .append(currentAge).append(equipmentAgesPerYear).append(equipmentCosts).append(maintenanceCosts)
+                .append(residualCosts).append(incomes).toHashCode();
     }
 
     public int getMaxAge() {

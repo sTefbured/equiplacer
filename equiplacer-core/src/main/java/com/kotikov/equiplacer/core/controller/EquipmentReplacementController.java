@@ -6,6 +6,7 @@ import com.kotikov.equiplacer.core.model.dto.EquipmentReplacementDTO;
 import com.kotikov.equiplacer.core.service.EquipmentGraphService;
 import com.kotikov.equiplacer.core.service.EquipmentReplacementService;
 import com.kotikov.equiplacer.graph.Graph;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class EquipmentReplacementController {
     private final EquipmentReplacementService equipmentReplacementService;
@@ -23,9 +24,10 @@ public class EquipmentReplacementController {
         return equipmentGraphService.getEquipmentGraph(yearsCount, maxAge, newEquipmentAges);
     }
 
-    public EquipmentOptimum getEquipmentOptimumSolution(EquipmentInformation equipmentInformation) {
+    public Pair<EquipmentOptimum, Graph<Integer>> getEquipmentOptimumSolution(EquipmentInformation equipmentInformation) {
         var graph = getEquipmentGraph(equipmentInformation);
-        return getEquipmentOptimumSolution(equipmentInformation, graph);
+        var optimum = getEquipmentOptimumSolution(equipmentInformation, graph);
+        return Pair.of(optimum, graph);
     }
 
     public EquipmentOptimum getEquipmentOptimumSolution(EquipmentInformation equipmentInformation, Graph<Integer> graph) {
