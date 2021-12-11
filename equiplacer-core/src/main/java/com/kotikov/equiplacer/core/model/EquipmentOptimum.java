@@ -1,4 +1,4 @@
-package com.kotikov.equiplacer.core.model.dto;
+package com.kotikov.equiplacer.core.model;
 
 import com.kotikov.equiplacer.core.model.enums.ReplacementDecision;
 

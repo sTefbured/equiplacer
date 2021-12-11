@@ -11,7 +11,7 @@ public class EquipmentInformation {
     private int maxAge;
     private int yearsCount;
     private int currentAge;
-    private List<Integer> equipmentAgesPerYear;
+    private int maxNewEquipmentAge;
     private List<Integer> equipmentCosts;
     private List<Integer> maintenanceCosts;
     private List<Integer> residualCosts;
@@ -21,13 +21,13 @@ public class EquipmentInformation {
 
     }
 
-    public EquipmentInformation(int maxAge, int yearsCount, int currentAge, List<Integer> equipmentAgesPerYear,
+    public EquipmentInformation(int maxAge, int yearsCount, int currentAge, int maxNewEquipmentAge,
                                 List<Integer> equipmentCosts, List<Integer> maintenanceCosts,
                                 List<Integer> residualCosts, List<Integer> incomes) {
         this.maxAge = maxAge;
         this.yearsCount = yearsCount;
         this.currentAge = currentAge;
-        this.equipmentAgesPerYear = equipmentAgesPerYear;
+        this.maxNewEquipmentAge = maxNewEquipmentAge;
         this.equipmentCosts = equipmentCosts;
         this.maintenanceCosts = maintenanceCosts;
         this.residualCosts = residualCosts;
@@ -122,19 +122,19 @@ public class EquipmentInformation {
         this.incomes = incomes;
     }
 
-    public List<Integer> getEquipmentAgesPerYear() {
-        return equipmentAgesPerYear;
+    public int getMaxNewEquipmentAge() {
+        return maxNewEquipmentAge;
     }
 
-    public void setEquipmentAgesPerYear(List<Integer> equipmentAgesPerYear) {
-        this.equipmentAgesPerYear = equipmentAgesPerYear;
+    public void setMaxNewEquipmentAge(int maxNewEquipmentAge) {
+        this.maxNewEquipmentAge = maxNewEquipmentAge;
     }
 
     public static class EquipmentInformationBuilder {
         private int maxAge;
         private int yearsCount;
         private int currentAge;
-        private List<Integer> equipmentAgesPerYear;
+        private int maxNewEquipmentAge;
         private List<Integer> equipmentCosts;
         private List<Integer> maintenanceCosts;
         private List<Integer> residualCosts;
@@ -144,7 +144,7 @@ public class EquipmentInformation {
         }
 
         public EquipmentInformation build() {
-            return new EquipmentInformation(maxAge, yearsCount, currentAge, equipmentAgesPerYear,
+            return new EquipmentInformation(maxAge, yearsCount, currentAge, maxNewEquipmentAge,
                     equipmentCosts, maintenanceCosts, residualCosts, incomes);
         }
 
@@ -175,12 +175,12 @@ public class EquipmentInformation {
             return this;
         }
 
-        public List<Integer> getEquipmentAgesPerYear() {
-            return equipmentAgesPerYear;
+        public int getMaxNewEquipmentAge() {
+            return maxNewEquipmentAge;
         }
 
-        public EquipmentInformationBuilder setEquipmentAgesPerYear(List<Integer> equipmentAgesPerYear) {
-            this.equipmentAgesPerYear = equipmentAgesPerYear;
+        public EquipmentInformationBuilder setMaxNewEquipmentAge(int maxNewEquipmentAge) {
+            this.maxNewEquipmentAge = maxNewEquipmentAge;
             return this;
         }
 
