@@ -1,7 +1,7 @@
 package com.kotikov.equiplacer.core.service;
 
 import com.kotikov.equiplacer.core.model.EquipmentInformation;
-import com.kotikov.equiplacer.core.model.dto.EquipmentOptimum;
+import com.kotikov.equiplacer.core.model.EquipmentOptimum;
 import com.kotikov.equiplacer.core.model.dto.EquipmentReplacementDTO;
 import com.kotikov.equiplacer.core.model.enums.ReplacementDecision;
 import com.kotikov.equiplacer.graph.Node;
@@ -35,17 +35,17 @@ public class EquipmentReplacementService {
         var currentResultLayer = new LinkedHashMap<Integer, EquipmentOptimum>();
         for (var ageNode : Objects.requireNonNull(currentAgeLayer)) {
             var prevFuncValSave = nextResultLayer != null ? nextResultLayer.get(ageNode.getData() + 1).getFunctionValue() : 0;
-            var prevFuncValReplace = nextResultLayer != null ? nextResultLayer.get(equipmentInformation.getEquipmentAgesPerYear().get(year - 1)).getFunctionValue() : 0;
+            var prevFuncValReplace = nextResultLayer != null ? nextResultLayer.get(equipmentInformation.getMaxNewEquipmentAge()).getFunctionValue() : 0;
             var replaceIncome = getReplaceIncome(ageNode.getData(), year, prevFuncValReplace);
             var saveIncome = getSaveIncome(ageNode.getData(), equipmentInformation.getMaxAge(), prevFuncValSave);
-            var optimum = findOptimum(ageNode.getData(), year, replaceIncome, saveIncome, nextResultLayer);
+            var optimum = findOptimum(ageNode.getData(), replaceIncome, saveIncome, nextResultLayer);
             currentResultLayer.put(ageNode.getData(), optimum);
         }
         resultStack.push(currentResultLayer);
         return resultStack;
     }
 
-    private EquipmentOptimum findOptimum(int age, int year, double replaceIncome, double saveIncome,
+    private EquipmentOptimum findOptimum(int age, double replaceIncome, double saveIncome,
                                          Map<Integer, EquipmentOptimum> nextResultLayer) {
         var optimum = new EquipmentOptimum();
         if (saveIncome > replaceIncome) {
@@ -57,14 +57,14 @@ public class EquipmentReplacementService {
         } else if (saveIncome < replaceIncome) {
             optimum.setFunctionValue(replaceIncome);
             optimum.setReplacementDecision(ReplacementDecision.REPLACE);
-            var newEquipmentAge = equipmentInformation.getEquipmentAgesPerYear().get(year - 1);
+            var newEquipmentAge = equipmentInformation.getMaxNewEquipmentAge();
             if (nextResultLayer != null) {
                 optimum.getNextOptimums().add(nextResultLayer.get(newEquipmentAge));
             }
         } else {
             optimum.setFunctionValue(saveIncome);
             optimum.setReplacementDecision(ReplacementDecision.BOTH);
-            var newEquipmentAge = equipmentInformation.getEquipmentAgesPerYear().get(year - 1);
+            var newEquipmentAge = equipmentInformation.getMaxNewEquipmentAge();
             if (nextResultLayer != null) {
                 optimum.getNextOptimums().add(nextResultLayer.get(newEquipmentAge));
                 optimum.getNextOptimums().add(nextResultLayer.get(age + 1));

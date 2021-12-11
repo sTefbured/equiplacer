@@ -24,7 +24,7 @@ class EquipmentReplacementServiceTest {
     public void getAnswerSequences() {
         var equipmentInformation = EquipmentInformation.builder()
                 .setEquipmentCosts(List.of(100000, 100000, 100000, 100000))
-                .setEquipmentAgesPerYear(List.of(1, 1, 1, 1))
+                .setMaxNewEquipmentAge(1)
                 .setIncomes(List.of(20000, 19000, 18500, 17200, 15500, 14000, 12200))
                 .setResidualCosts(List.of(100000, 80000, 60000, 50000, 30000, 10000, 5000))
                 .setMaintenanceCosts(List.of(200, 600, 1200, 1500, 1700, 1800, 2200))

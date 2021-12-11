@@ -1,7 +1,8 @@
 package com.kotikov.equiplacer.core.controller;
 
 import com.kotikov.equiplacer.core.model.EquipmentInformation;
-import com.kotikov.equiplacer.core.model.dto.EquipmentOptimum;
+import com.kotikov.equiplacer.core.model.EquipmentOptimum;
+import com.kotikov.equiplacer.core.model.dto.EquipmentGraphDTO;
 import com.kotikov.equiplacer.core.model.dto.EquipmentReplacementDTO;
 import com.kotikov.equiplacer.core.service.EquipmentGraphService;
 import com.kotikov.equiplacer.core.service.EquipmentReplacementService;
@@ -19,8 +20,10 @@ public class EquipmentReplacementController {
     public Graph<Integer> getEquipmentGraph(EquipmentInformation equipmentInformation) {
         var yearsCount = equipmentInformation.getYearsCount();
         var maxAge = equipmentInformation.getMaxAge();
-        var newEquipmentAges = equipmentInformation.getEquipmentAgesPerYear();
-        return equipmentGraphService.getEquipmentGraph(yearsCount, maxAge, newEquipmentAges);
+        var firstYearAge = equipmentInformation.getCurrentAge();
+        var maxNewEquipmentAge = equipmentInformation.getMaxNewEquipmentAge();
+        var equipmentGraphDTO = new EquipmentGraphDTO(yearsCount, maxAge, firstYearAge, maxNewEquipmentAge);
+        return equipmentGraphService.getEquipmentGraph(equipmentGraphDTO);
     }
 
     public EquipmentOptimum getEquipmentOptimumSolution(EquipmentInformation equipmentInformation) {
