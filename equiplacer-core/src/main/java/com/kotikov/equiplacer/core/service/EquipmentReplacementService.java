@@ -34,10 +34,14 @@ public class EquipmentReplacementService {
         var nextResultLayer = resultStack.peek();
         var currentResultLayer = new LinkedHashMap<Integer, EquipmentOptimum>();
         for (var ageNode : Objects.requireNonNull(currentAgeLayer)) {
-            var prevFuncValSave = nextResultLayer != null ? nextResultLayer.get(ageNode.getData() + 1).getFunctionValue() : 0;
-            var prevFuncValReplace = nextResultLayer != null ? nextResultLayer.get(equipmentInformation.getMaxNewEquipmentAge()).getFunctionValue() : 0;
-            var replaceIncome = getReplaceIncome(ageNode.getData(), year, prevFuncValReplace);
-            var saveIncome = getSaveIncome(ageNode.getData(), equipmentInformation.getMaxAge(), prevFuncValSave);
+            var previousFunctionValueReplace = nextResultLayer != null
+                    ? nextResultLayer.get(equipmentInformation.getMaxNewEquipmentAge()).getFunctionValue()
+                    : 0;
+            var previousFunctionValueSave = nextResultLayer != null
+                    ? nextResultLayer.get(ageNode.getData() + 1).getFunctionValue()
+                    : 0;
+            var replaceIncome = getReplaceIncome(ageNode.getData(), year, previousFunctionValueReplace);
+            var saveIncome = getSaveIncome(ageNode.getData(), equipmentInformation.getMaxAge(), previousFunctionValueSave);
             var optimum = findOptimum(ageNode.getData(), replaceIncome, saveIncome, nextResultLayer);
             currentResultLayer.put(ageNode.getData(), optimum);
         }

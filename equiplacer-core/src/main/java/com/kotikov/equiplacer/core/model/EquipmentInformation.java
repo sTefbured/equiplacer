@@ -54,7 +54,7 @@ public class EquipmentInformation {
         }
 
         return new EqualsBuilder().append(maxAge, that.maxAge).append(yearsCount, that.yearsCount)
-                .append(currentAge, that.currentAge).append(equipmentAgesPerYear, that.equipmentAgesPerYear)
+                .append(currentAge, that.currentAge).append(maxNewEquipmentAge, that.maxNewEquipmentAge)
                 .append(equipmentCosts, that.equipmentCosts).append(maintenanceCosts, that.maintenanceCosts)
                 .append(residualCosts, that.residualCosts).append(incomes, that.incomes).isEquals();
     }
@@ -62,7 +62,7 @@ public class EquipmentInformation {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(maxAge).append(yearsCount)
-                .append(currentAge).append(equipmentAgesPerYear).append(equipmentCosts).append(maintenanceCosts)
+                .append(currentAge).append(maxNewEquipmentAge).append(equipmentCosts).append(maintenanceCosts)
                 .append(residualCosts).append(incomes).toHashCode();
     }
 
