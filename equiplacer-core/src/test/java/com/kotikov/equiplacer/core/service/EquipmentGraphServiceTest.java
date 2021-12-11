@@ -16,29 +16,30 @@ class EquipmentGraphServiceTest {
     @BeforeEach
     public void initialize() {
         adjacencyMatrix = new int[][] {
-                {0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-                {0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0},
-                {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0},
+                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
-        data = List.of(3, 4, 5, 3, 4, 2, 1, 2, 3, 2, 3, 4, 5);
-        startAges = List.of(3, 2, 1, 3, 2);
+        data = List.of(3, 4, 5, 6, 1, 1, 2, 1, 2, 3, 1, 2, 3, 4);
+        startAges = List.of(1, 1, 1, 1, 1);
     }
 
     @Test
     public void getEquipmentGraph() {
         var expectation = new Graph<>(adjacencyMatrix, data);
         var service = new EquipmentGraphService();
-        var actuality = service.getEquipmentGraph(5, 5, startAges);
+        var actuality = service.getEquipmentGraph(4, 6, 3, startAges);
         var expectationIterator = expectation.iterator();
         for (var node : actuality) {
             var expectationNode = expectationIterator.next();

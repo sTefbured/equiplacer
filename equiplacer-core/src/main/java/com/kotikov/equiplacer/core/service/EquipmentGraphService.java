@@ -10,9 +10,9 @@ public class EquipmentGraphService {
 
     }
 
-    public Graph<Integer> getEquipmentGraph(int yearsCount, int maxAge, List<Integer> newEquipmentAges) {
+    public Graph<Integer> getEquipmentGraph(int yearsCount, int maxAge, int currentAge, List<Integer> newEquipmentAges) {
         var nodesPoolMap = new LinkedHashMap<Pair<Integer, Integer>, int[]>();
-        fillNodesPool(nodesPoolMap, maxAge, newEquipmentAges.get(0), 1, yearsCount, newEquipmentAges);
+        fillNodesPool(nodesPoolMap, maxAge, currentAge, 1, yearsCount, newEquipmentAges);
 
         var nodesPool = nodesPoolMap.entrySet().stream().toList();
         nodesPool.forEach(entry -> entry.setValue(new int[nodesPool.size()]));
@@ -25,12 +25,15 @@ public class EquipmentGraphService {
 
     private void fillNodesPool(Map<Pair<Integer, Integer>, int[]> nodesPool, int maxAge, int currentAge,
                                int currentYear, int yearsCount, List<Integer> newEquipmentAges) {
+        if (currentAge > maxAge) {
+            throw new IllegalArgumentException("Current age must be equal or less than max age");
+        }
         var key = Pair.of(currentAge, currentYear);
         if (nodesPool.containsKey(key)) {
             return;
         }
         nodesPool.put(key, null);
-        if (currentYear == yearsCount) {
+        if (currentYear > yearsCount) {
             return;
         }
         if (currentAge < maxAge) {
@@ -43,7 +46,7 @@ public class EquipmentGraphService {
                                 int maxAge, int yearsCount, List<Integer> newEquipmentAges) {
         nodesPool.forEach(entry -> {
             var year = entry.getKey().getRight();
-            if (year == yearsCount) {
+            if (year > yearsCount) {
                 return;
             }
             var age = entry.getKey().getLeft();

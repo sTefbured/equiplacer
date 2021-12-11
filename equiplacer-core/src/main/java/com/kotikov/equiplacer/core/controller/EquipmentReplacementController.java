@@ -20,7 +20,7 @@ public class EquipmentReplacementController {
         var yearsCount = equipmentInformation.getYearsCount();
         var maxAge = equipmentInformation.getMaxAge();
         var newEquipmentAges = equipmentInformation.getEquipmentAgesPerYear();
-        return equipmentGraphService.getEquipmentGraph(yearsCount, maxAge, newEquipmentAges);
+        return equipmentGraphService.getEquipmentGraph(yearsCount, maxAge, equipmentInformation.getCurrentAge(), newEquipmentAges);
     }
 
     public EquipmentOptimum getEquipmentOptimumSolution(EquipmentInformation equipmentInformation) {
