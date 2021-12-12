@@ -24,8 +24,8 @@ public class JGraphPanel<T extends Number> extends JPanel {
 
     private CoordinateSystemPanel<T> coordinateSystemPanel;
 
-    public JGraphPanel() {
-        this(null, null, null);
+    public JGraphPanel(String xAxisTitle, String yAxisTitle) {
+        this(null, xAxisTitle, yAxisTitle);
     }
 
     public JGraphPanel(Graph<NodeComponent<T>> graph, String xAxisTitle, String yAxisTitle) {

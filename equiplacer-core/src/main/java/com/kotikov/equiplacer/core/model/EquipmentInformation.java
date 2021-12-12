@@ -1,5 +1,7 @@
 package com.kotikov.equiplacer.core.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -22,8 +24,8 @@ public class EquipmentInformation {
     }
 
     public EquipmentInformation(int maxAge, int yearsCount, int currentAge, int maxNewEquipmentAge,
-                                List<Integer> equipmentCosts, List<Integer> maintenanceCosts,
-                                List<Integer> residualCosts, List<Integer> incomes) {
+                                boolean isSellLastYearEquipmentOn, List<Integer> equipmentCosts,
+                                List<Integer> maintenanceCosts, List<Integer> residualCosts, List<Integer> incomes) {
         this.maxAge = maxAge;
         this.yearsCount = yearsCount;
         this.currentAge = currentAge;
@@ -32,6 +34,7 @@ public class EquipmentInformation {
         this.maintenanceCosts = maintenanceCosts;
         this.residualCosts = residualCosts;
         this.incomes = incomes;
+        this.isSellLastYearEquipmentOn = isSellLastYearEquipmentOn;
     }
 
     public static EquipmentInformationBuilder builder() {
@@ -41,6 +44,29 @@ public class EquipmentInformation {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof EquipmentInformation that)) {
+            return false;
+        }
+
+        return new EqualsBuilder().append(maxAge, that.maxAge).append(yearsCount, that.yearsCount)
+                .append(currentAge, that.currentAge).append(maxNewEquipmentAge, that.maxNewEquipmentAge)
+                .append(equipmentCosts, that.equipmentCosts).append(maintenanceCosts, that.maintenanceCosts)
+                .append(residualCosts, that.residualCosts).append(incomes, that.incomes).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(maxAge).append(yearsCount)
+                .append(currentAge).append(maxNewEquipmentAge).append(equipmentCosts).append(maintenanceCosts)
+                .append(residualCosts).append(incomes).toHashCode();
     }
 
     public int getMaxAge() {
@@ -131,7 +157,7 @@ public class EquipmentInformation {
 
         public EquipmentInformation build() {
             return new EquipmentInformation(maxAge, yearsCount, currentAge, maxNewEquipmentAge,
-                    equipmentCosts, maintenanceCosts, residualCosts, incomes);
+                    isSellLastYearEquipmentOn, equipmentCosts, maintenanceCosts, residualCosts, incomes);
         }
 
         public int getMaxAge() {
@@ -210,8 +236,9 @@ public class EquipmentInformation {
             return isSellLastYearEquipmentOn;
         }
 
-        public void setSellLastYearEquipmentOn(boolean sellLastYearEquipmentOn) {
+        public EquipmentInformationBuilder setSellLastYearEquipmentOn(boolean sellLastYearEquipmentOn) {
             isSellLastYearEquipmentOn = sellLastYearEquipmentOn;
+            return this;
         }
     }
 }
