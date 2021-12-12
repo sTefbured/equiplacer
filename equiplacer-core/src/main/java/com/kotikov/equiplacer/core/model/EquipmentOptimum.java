@@ -2,30 +2,25 @@ package com.kotikov.equiplacer.core.model;
 
 import com.kotikov.equiplacer.core.model.enums.ReplacementDecision;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class EquipmentOptimum {
-    private final List<EquipmentOptimum> nextOptimums;
+    private final List<Map.Entry<ReplacementDecision, EquipmentOptimum>> nextOptimums;
 
+    private int year;
     private double functionValue;
-    private ReplacementDecision replacementDecision;
-    private final List<Integer> newEquipmentAges;
 
     public EquipmentOptimum() {
-        this(0, null);
+        this(0, 0);
     }
 
-    public EquipmentOptimum(double functionValue, ReplacementDecision replacementDecision) {
+    public EquipmentOptimum(double functionValue, int year) {
         this.functionValue = functionValue;
-        this.replacementDecision = replacementDecision;
-        newEquipmentAges = new LinkedList<>();
-        nextOptimums = new ArrayList<>(2);
+        this.year = year;
+        nextOptimums = new LinkedList<>();
     }
 
-    public List<EquipmentOptimum> getNextOptimums() {
+    public List<Map.Entry<ReplacementDecision, EquipmentOptimum>> getNextOptimums() {
         return nextOptimums;
     }
 
@@ -37,19 +32,11 @@ public class EquipmentOptimum {
         this.functionValue = functionValue;
     }
 
-    public ReplacementDecision getReplacementDecision() {
-        return replacementDecision;
+    public int getYear() {
+        return year;
     }
 
-    public void setReplacementDecision(ReplacementDecision replacementDecision) {
-        this.replacementDecision = replacementDecision;
-    }
-
-    public List<Integer> getNewEquipmentAges() {
-        return Collections.unmodifiableList(newEquipmentAges);
-    }
-
-    public void addNewEquipmentAges(List<Integer> newEquipmentAges) {
-        this.newEquipmentAges.addAll(newEquipmentAges);
+    public void setYear(int year) {
+        this.year = year;
     }
 }
