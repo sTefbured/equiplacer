@@ -1,15 +1,11 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 
-import com.kotikov.equiplacer.client.desktop.view.dialog.IncomeDialog;
-import com.kotikov.equiplacer.client.desktop.view.dialog.MaintenanceCostsDialog;
-import com.kotikov.equiplacer.client.desktop.view.dialog.ResidualValuesDialog;
+import com.kotikov.equiplacer.client.desktop.view.dialog.CostsInputDialog;
 import com.kotikov.equiplacer.core.model.EquipmentInformation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-
-import static java.awt.GridBagConstraints.*;
 
 public class EquipmentDetailsPanel extends JPanel {
     private static final String BORDER_TITLE = "Equipment details";
@@ -19,9 +15,7 @@ public class EquipmentDetailsPanel extends JPanel {
     private static final String YEARS_COUNT_TEXT_FIELD_STR = "Years count";
     private static final String CURRENT_EQUIPMENT_AGE_TEXT_FIELD_STR = "Current age";
 
-    private static final String MAINTENANCE_COSTS_BUTTON_STR = "Maintenance costs";
-    private static final String RESIDUAL_VALUES_BUTTON_STR = "Residual values";
-    private static final String INCOME_BUTTON_STR = "Income";
+    private static final String COSTS_INPUT_BUTTON_STR = "Enter costs";
 
     private static final Font TEXT_FIELD_FONT = new Font(Font.SERIF, Font.PLAIN, 14);
 
@@ -29,9 +23,7 @@ public class EquipmentDetailsPanel extends JPanel {
     private JTextField yearsCountTextField;
     private JTextField maxEquipmentAgeTextField;
     private JTextField maxNewEquipmentAgeTextField;
-    private JButton maintenanceCostsButton;
-    private JButton residualValuesButton;
-    private JButton incomeButton;
+    private JButton enterCostsButton;
 
     private JRadioButton sellRadioButton;
     private JRadioButton notSellRadioButton;
@@ -66,12 +58,9 @@ public class EquipmentDetailsPanel extends JPanel {
 
     private void initializeButtons() {
         initializeRadioButtons();
-        initializeMaintenanceCostsButton();
-        initializeResidualValuesButton();
-        initializeIncomeButton();
+        initializeEnterCostsButton();
     }
 
-    //TODO: MAX NEW EQUIPMENT AGE
     public EquipmentInformation getEquipmentInformation() {
         return EquipmentInformation.builder()
                 .setMaxAge(Integer.parseInt(maxEquipmentAgeTextField.getText()))
@@ -85,43 +74,17 @@ public class EquipmentDetailsPanel extends JPanel {
                 .build();
     }
 
-    private void initializeMaintenanceCostsButton() {
-        maintenanceCostsButton = new JButton(MAINTENANCE_COSTS_BUTTON_STR);
-        maintenanceCostsButton.setPreferredSize(new Dimension(145, 30));
-        maintenanceCostsButton.addActionListener(e -> {
-            new MaintenanceCostsDialog(this::onMaintenanceCostsDialogSubmit,
-                    Integer.parseInt(maxEquipmentAgeTextField.getText())).setVisible(true);
-        });
+    private void initializeEnterCostsButton() {
+        enterCostsButton = new JButton(COSTS_INPUT_BUTTON_STR);
+        enterCostsButton.setPreferredSize(new Dimension(145, 30));
+        enterCostsButton.addActionListener(e -> new CostsInputDialog(this::onCostsInputDialogSubmit,
+                Integer.parseInt(maxEquipmentAgeTextField.getText())).setVisible(true));
     }
 
-    private void onMaintenanceCostsDialogSubmit(List<Integer> maintenanceCosts) {
-        this.maintenanceCosts = maintenanceCosts;
-    }
-
-    private void initializeResidualValuesButton() {
-        residualValuesButton = new JButton(RESIDUAL_VALUES_BUTTON_STR);
-        residualValuesButton.setPreferredSize(new Dimension(145, 30));
-        residualValuesButton.addActionListener(e -> {
-            new ResidualValuesDialog(this::onResidualValuesDialogSubmit,
-                    Integer.parseInt(maxEquipmentAgeTextField.getText())).setVisible(true);
-        });
-    }
-
-    private void onResidualValuesDialogSubmit(List<Integer> residualValues) {
-        this.residualValues = residualValues;
-    }
-
-    private void initializeIncomeButton() {
-        incomeButton = new JButton(INCOME_BUTTON_STR);
-        incomeButton.setPreferredSize(new Dimension(145, 30));
-        incomeButton.addActionListener(e -> {
-            new IncomeDialog(this::onIncomeDialogSubmit,
-                    Integer.parseInt(maxEquipmentAgeTextField.getText())).setVisible(true);
-        });
-    }
-
-    private void onIncomeDialogSubmit(List<Integer> incomes) {
+    private void onCostsInputDialogSubmit(List<Integer> incomes, List<Integer> maintenanceCosts, List<Integer> residualValues) {
         this.incomes = incomes;
+        this.maintenanceCosts = maintenanceCosts;
+        this.residualValues = residualValues;
     }
 
     private void initializeRadioButtons() {
@@ -148,12 +111,10 @@ public class EquipmentDetailsPanel extends JPanel {
         radioButtonsPanel.add(notSellRadioButton);
         add(radioButtonsPanel);
 
-        var buttonsPanel = new JPanel(new GridLayout(1, 2, 40, 10));
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 40, 0, 40));
-        buttonsPanel.add(maintenanceCostsButton);
-        buttonsPanel.add(residualValuesButton);
-        buttonsPanel.add(incomeButton);
-        add(buttonsPanel);}
+        var enterCostsButtonWrapper = new JPanel();
+        enterCostsButtonWrapper.add(enterCostsButton);
+        add(enterCostsButtonWrapper);
+    }
 
     private void addLabeledTextField(JPanel panel, String labelText, JTextField textField) {
         var wrapper = new JPanel(new GridLayout(1, 2, 30, 0));
