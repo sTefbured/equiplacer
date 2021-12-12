@@ -58,7 +58,7 @@ public class EquipmentReplacementService {
             lastReplaceFunctionValue = replaceIncome.getRight();
         }
         if (maxReplaceIncome < saveIncome) {
-            optimum = new EquipmentOptimum(saveIncome, year);
+            optimum = new EquipmentOptimum(saveIncome, age);
             if (nextResultLayer != null) {
                 optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
             }
@@ -66,7 +66,7 @@ public class EquipmentReplacementService {
             return;
         }
         if (saveIncome == maxReplaceIncome) {
-            optimum = new EquipmentOptimum(saveIncome, year);
+            optimum = new EquipmentOptimum(saveIncome, age);
             if (nextResultLayer != null) {
                 double finalLastReplaceFunctionValue = lastReplaceFunctionValue;
                 optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
@@ -77,7 +77,7 @@ public class EquipmentReplacementService {
                 optimum.getNextOptimums().addAll(optimums);
             }
         } else {
-            optimum = new EquipmentOptimum(maxReplaceIncome, year);
+            optimum = new EquipmentOptimum(maxReplaceIncome, age);
             if (nextResultLayer != null) {
                 double finalLastReplaceFunctionValue = lastReplaceFunctionValue;
                 var optimums = nextResultLayer.values().stream()

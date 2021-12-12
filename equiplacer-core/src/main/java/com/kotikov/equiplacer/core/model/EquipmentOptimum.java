@@ -7,16 +7,16 @@ import java.util.*;
 public class EquipmentOptimum {
     private final List<Map.Entry<ReplacementDecision, EquipmentOptimum>> nextOptimums;
 
-    private int year;
+    private int age;
     private double functionValue;
 
     public EquipmentOptimum() {
         this(0, 0);
     }
 
-    public EquipmentOptimum(double functionValue, int year) {
+    public EquipmentOptimum(double functionValue, int age) {
         this.functionValue = functionValue;
-        this.year = year;
+        this.age = age;
         nextOptimums = new LinkedList<>();
     }
 
@@ -32,11 +32,11 @@ public class EquipmentOptimum {
         this.functionValue = functionValue;
     }
 
-    public int getYear() {
-        return year;
+    public int getAge() {
+        return age;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setAge(int age) {
+        this.age = age;
     }
 }
