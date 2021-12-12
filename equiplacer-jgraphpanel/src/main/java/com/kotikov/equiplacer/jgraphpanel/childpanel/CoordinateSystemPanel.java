@@ -33,12 +33,9 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         super();
         setBackground(Color.WHITE);
         setLayout(new CoordinatesLayout());
-        this.graph = graph;
         this.deltaX = 30;
         this.deltaY = 20;
-        for (var node : graph) {
-            add(node.getData());
-        }
+        setGraph(graph);
     }
 
     @Override
@@ -47,7 +44,9 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         Graphics2D graphics2D = (Graphics2D) g;
         drawGrid(graphics2D);
         drawAxes(graphics2D);
-        drawConnectionsBetweenNodes(graphics2D);
+        if (graph != null) {
+            drawConnectionsBetweenNodes(graphics2D);
+        }
     }
 
     private void drawConnectionsBetweenNodes(Graphics2D graphics2D) {
@@ -141,7 +140,13 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
     }
 
     public void setGraph(Graph<NodeComponent<T>> graph) {
+        if (this.graph != null) {
+            this.graph.forEach(node -> remove(node.getData()));
+        }
         this.graph = graph;
+        if (graph != null) {
+            graph.forEach(node -> add(node.getData()));
+        }
     }
 
     public int getOffsetX() {
