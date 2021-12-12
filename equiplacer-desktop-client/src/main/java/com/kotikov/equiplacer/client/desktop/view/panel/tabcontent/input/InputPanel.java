@@ -1,6 +1,7 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 
 import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
+import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +11,14 @@ public class InputPanel extends JPanel {
             "Age", "Income r(t)", "Maintenance cost c(t)", "Residual value s(t)"
     };
 
+    private final TabContentPanel parentTabContentPanel;
+
     private final JButton calculateButton;
     private final JTable costsTable;
     private final EquipmentDetailsPanel equipmentDetailsPanel;
 
-    public InputPanel(JTabbedPane parentTabbedPane) {
+    public InputPanel(TabContentPanel parentTabContentPanel) {
+        this.parentTabContentPanel = parentTabContentPanel;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         equipmentDetailsPanel = new EquipmentDetailsPanel();
         add(equipmentDetailsPanel);
@@ -32,18 +36,19 @@ public class InputPanel extends JPanel {
         calculateButton.addActionListener(e -> {
             var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
             var solution = ApplicationContext.getEquipmentOptimumSolution(equipmentInformation);
-            for (int i = 0; i < 4; i++) {
-                switch (solution.getReplacementDecision()) {
-                    case REPLACE -> System.out.println("R");
-                    case KEEP -> System.out.println("K");
-                    case BOTH -> System.out.println("B");
-                }
-                try {
-                    solution = solution.getNextOptimums().get(0);
-                } catch (Exception ex) {
-                    System.out.println("EXCEPTION LOL");
-                }
-            }
+            parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
+//            for (int i = 0; i < 4; i++) {
+//                switch (solution.getReplacementDecision()) {
+//                    case REPLACE -> System.out.println("R");
+//                    case KEEP -> System.out.println("K");
+//                    case BOTH -> System.out.println("B");
+//                }
+//                try {
+//                    solution = solution.getNextOptimums().get(0);
+//                } catch (Exception ex) {
+//                    System.out.println("EXCEPTION LOL");
+//                }
+//            }
         });
     }
 }
