@@ -7,11 +7,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+//TODO: find out if should delete equipmentCosts (maybe residual costs is enough)
 public class EquipmentInformation {
     private int maxAge;
     private int yearsCount;
     private int currentAge;
     private int maxNewEquipmentAge;
+    private boolean isSellLastYearEquipmentOn;
     private List<Integer> equipmentCosts;
     private List<Integer> maintenanceCosts;
     private List<Integer> residualCosts;
@@ -130,11 +132,20 @@ public class EquipmentInformation {
         this.maxNewEquipmentAge = maxNewEquipmentAge;
     }
 
+    public boolean isSellLastYearEquipmentOn() {
+        return isSellLastYearEquipmentOn;
+    }
+
+    public void setSellLastYearEquipmentOn(boolean sellLastYearEquipmentOn) {
+        isSellLastYearEquipmentOn = sellLastYearEquipmentOn;
+    }
+
     public static class EquipmentInformationBuilder {
         private int maxAge;
         private int yearsCount;
         private int currentAge;
         private int maxNewEquipmentAge;
+        private boolean isSellLastYearEquipmentOn;
         private List<Integer> equipmentCosts;
         private List<Integer> maintenanceCosts;
         private List<Integer> residualCosts;
@@ -218,6 +229,14 @@ public class EquipmentInformation {
         public EquipmentInformationBuilder setIncomes(List<Integer> incomes) {
             this.incomes = incomes;
             return this;
+        }
+
+        public boolean isSellLastYearEquipmentOn() {
+            return isSellLastYearEquipmentOn;
+        }
+
+        public void setSellLastYearEquipmentOn(boolean sellLastYearEquipmentOn) {
+            isSellLastYearEquipmentOn = sellLastYearEquipmentOn;
         }
     }
 }
