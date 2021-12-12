@@ -19,6 +19,8 @@ public class EquipmentDetailsPanel extends JPanel {
 
     private static final Font TEXT_FIELD_FONT = new Font(Font.SERIF, Font.PLAIN, 14);
 
+    private final InputPanel parentInputPanel;
+
     private JTextField currentEquipmentAgeTextField;
     private JTextField yearsCountTextField;
     private JTextField maxEquipmentAgeTextField;
@@ -32,8 +34,9 @@ public class EquipmentDetailsPanel extends JPanel {
     private List<Integer> residualValues;
     private List<Integer> incomes;
 
-    public EquipmentDetailsPanel() {
+    public EquipmentDetailsPanel(InputPanel parentInputPanel) {
         super();
+        this.parentInputPanel = parentInputPanel;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createTitledBorder(BORDER_TITLE));
         initializeComponents();
@@ -85,6 +88,7 @@ public class EquipmentDetailsPanel extends JPanel {
         this.incomes = incomes;
         this.maintenanceCosts = maintenanceCosts;
         this.residualValues = residualValues;
+        parentInputPanel.setTableValues(incomes, maintenanceCosts, residualValues);
     }
 
     private void initializeRadioButtons() {

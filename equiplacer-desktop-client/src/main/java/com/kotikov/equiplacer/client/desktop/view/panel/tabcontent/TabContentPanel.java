@@ -26,5 +26,7 @@ public class TabContentPanel extends JPanel {
         remove(graphPanel);
         graphPanel = new JGraphPanel<>(componentsGraph, X_AXIS_TITLE, Y_AXIS_TITLE);
         add(graphPanel);
+        revalidate();
+        repaint();
     }
 }
