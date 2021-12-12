@@ -24,8 +24,8 @@ public class EquipmentInformation {
     }
 
     public EquipmentInformation(int maxAge, int yearsCount, int currentAge, int maxNewEquipmentAge,
-                                List<Integer> equipmentCosts, List<Integer> maintenanceCosts,
-                                List<Integer> residualCosts, List<Integer> incomes) {
+                                boolean isSellLastYearEquipmentOn, List<Integer> equipmentCosts,
+                                List<Integer> maintenanceCosts, List<Integer> residualCosts, List<Integer> incomes) {
         this.maxAge = maxAge;
         this.yearsCount = yearsCount;
         this.currentAge = currentAge;
@@ -34,6 +34,7 @@ public class EquipmentInformation {
         this.maintenanceCosts = maintenanceCosts;
         this.residualCosts = residualCosts;
         this.incomes = incomes;
+        this.isSellLastYearEquipmentOn = isSellLastYearEquipmentOn;
     }
 
     public static EquipmentInformationBuilder builder() {
@@ -156,7 +157,7 @@ public class EquipmentInformation {
 
         public EquipmentInformation build() {
             return new EquipmentInformation(maxAge, yearsCount, currentAge, maxNewEquipmentAge,
-                    equipmentCosts, maintenanceCosts, residualCosts, incomes);
+                    isSellLastYearEquipmentOn, equipmentCosts, maintenanceCosts, residualCosts, incomes);
         }
 
         public int getMaxAge() {
@@ -235,8 +236,9 @@ public class EquipmentInformation {
             return isSellLastYearEquipmentOn;
         }
 
-        public void setSellLastYearEquipmentOn(boolean sellLastYearEquipmentOn) {
+        public EquipmentInformationBuilder setSellLastYearEquipmentOn(boolean sellLastYearEquipmentOn) {
             isSellLastYearEquipmentOn = sellLastYearEquipmentOn;
+            return this;
         }
     }
 }

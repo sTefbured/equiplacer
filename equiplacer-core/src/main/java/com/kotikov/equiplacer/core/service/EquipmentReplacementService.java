@@ -95,7 +95,7 @@ public class EquipmentReplacementService {
         result += -equipmentInformation.getResidualCosts().get(newEquipmentAge - 1) + lastFunctionValue;
         result -= equipmentInformation.getMaintenanceCosts().get(newEquipmentAge - 1);
         if (equipmentInformation.isSellLastYearEquipmentOn() && equipmentInformation.getYearsCount() == year) {
-            result += equipmentInformation.getResidualCosts().get(newEquipmentAge + 1);
+            result += equipmentInformation.getResidualCosts().get(newEquipmentAge);
         }
         return Pair.of(result, lastFunctionValue);
     }

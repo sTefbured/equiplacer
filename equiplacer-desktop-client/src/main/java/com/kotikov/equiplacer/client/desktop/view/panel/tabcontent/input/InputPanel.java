@@ -1,11 +1,9 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 
 import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
-import com.kotikov.equiplacer.core.model.EquipmentInformation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class InputPanel extends JPanel {
     private static final String[] TABLE_HEADERS = new String[]{
@@ -32,17 +30,7 @@ public class InputPanel extends JPanel {
 
     private void addCalculateButtonListener() {
         calculateButton.addActionListener(e -> {
-//            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
-            var equipmentInformation = EquipmentInformation.builder()
-                    .setEquipmentCosts(List.of(100000, 100000, 100000, 100000))
-                    .setMaxNewEquipmentAge(1)
-                    .setIncomes(List.of(20000, 19000, 18500, 17200, 15500, 14000, 12200))
-                    .setResidualCosts(List.of(100000, 80000, 60000, 50000, 30000, 10000, 5000))
-                    .setMaintenanceCosts(List.of(200, 600, 1200, 1500, 1700, 1800, 2200))
-                    .setCurrentAge(3)
-                    .setMaxAge(6)
-                    .setYearsCount(4)
-                    .build();
+            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
             var solution = ApplicationContext.getEquipmentOptimumSolution(equipmentInformation);
             for (int i = 0; i < 4; i++) {
                 switch (solution.getReplacementDecision()) {

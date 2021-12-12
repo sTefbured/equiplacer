@@ -83,6 +83,7 @@ public class EquipmentDetailsPanel extends JPanel {
                 .setResidualCosts(residualValues)
                 .setMaintenanceCosts(maintenanceCosts)
                 .setMaxNewEquipmentAge(1)
+                .setSellLastYearEquipmentOn(sellRadioButton.isSelected())
                 .build();
     }
 
