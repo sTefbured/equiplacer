@@ -37,11 +37,11 @@ class EquipmentReplacementServiceTest {
         var equipmentDto = new EquipmentReplacementDTO(equipmentInformation, graph);
         var current = service.getAnswerSequences(equipmentDto);
         var expectationIterator = List.of(REPLACE, KEEP, KEEP, KEEP).iterator();
-        while (current != null) {
+        while (!Objects.requireNonNull(current).getNextOptimums().isEmpty()) {
             var expected = expectationIterator.next();
-            var actual = current.getReplacementDecision();
+            var actual = current.getNextOptimums().get(0).getKey();
             assertEquals(expected, actual);
-            current = current.getNextOptimums().isEmpty() ? null : current.getNextOptimums().get(0);
+            current = current.getNextOptimums().isEmpty() ? null : current.getNextOptimums().get(0).getValue();
         }
     }
 
@@ -81,11 +81,12 @@ class EquipmentReplacementServiceTest {
         var graph = createGraph_NewEquipmentIsNotNew();
         var equipmentDto = new EquipmentReplacementDTO(equipmentInformation, graph);
         var current = service.getAnswerSequences(equipmentDto);
-        var expectations = List.of(REPLACE, KEEP, KEEP, KEEP);
-        for (var expected : expectations) {
-            var actual = Objects.requireNonNull(current).getReplacementDecision();
+        var expectationIterator = List.of(REPLACE, KEEP, KEEP, KEEP).iterator();
+        while (!Objects.requireNonNull(current).getNextOptimums().isEmpty()) {
+            var expected = expectationIterator.next();
+            var actual = current.getNextOptimums().get(0).getKey();
             assertEquals(expected, actual);
-            current = current.getNextOptimums().isEmpty() ? null : current.getNextOptimums().get(0);
+            current = current.getNextOptimums().isEmpty() ? null : current.getNextOptimums().get(0).getValue();
         }
     }
 

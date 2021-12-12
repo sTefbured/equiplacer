@@ -41,10 +41,10 @@ public class EquipmentReplacementService {
     }
 
     //TODO: REFACTOR, BUT DON'T BREAK IT PLS
-    private void setOptimums(Map<Integer, EquipmentOptimum> currentResultLayer, int age, int year, Map<Integer, EquipmentOptimum> nextResultLayer) {
+    private void setOptimums(Map<Integer, EquipmentOptimum> currentResultLayer, int age, int year,
+                             Map<Integer, EquipmentOptimum> nextResultLayer) {
         EquipmentOptimum optimum;
         var saveIncome = getSaveIncome(age, year, equipmentInformation.getMaxAge(), nextResultLayer);
-        var maxReplaceIncomeAges = new LinkedList<Integer>();
         var maxReplaceIncome = Double.NEGATIVE_INFINITY;
         var lastReplaceFunctionValue = 0.0;
         for (int i = 1; i <= equipmentInformation.getMaxNewEquipmentAge(); i++) {
@@ -54,36 +54,39 @@ public class EquipmentReplacementService {
             }
             if (replaceIncome.getLeft() > maxReplaceIncome) {
                 maxReplaceIncome = replaceIncome.getLeft();
-                maxReplaceIncomeAges.clear();
             }
             lastReplaceFunctionValue = replaceIncome.getRight();
-            maxReplaceIncomeAges.add(i);
         }
         if (maxReplaceIncome < saveIncome) {
-            optimum = new EquipmentOptimum(saveIncome, ReplacementDecision.KEEP);
+            optimum = new EquipmentOptimum(saveIncome, year);
             if (nextResultLayer != null) {
-                optimum.getNextOptimums().add(nextResultLayer.get(age + 1));
+                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
             }
             currentResultLayer.put(age, optimum);
             return;
         }
         if (saveIncome == maxReplaceIncome) {
-            optimum = new EquipmentOptimum(saveIncome, ReplacementDecision.BOTH);
+            optimum = new EquipmentOptimum(saveIncome, year);
             if (nextResultLayer != null) {
                 double finalLastReplaceFunctionValue = lastReplaceFunctionValue;
-                var optimums = nextResultLayer.values().stream().filter(entry -> entry.getFunctionValue() == finalLastReplaceFunctionValue).toList();
+                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
+                var optimums = nextResultLayer.values().stream()
+                        .filter(entry -> entry.getFunctionValue() == finalLastReplaceFunctionValue)
+                        .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
+                        .toList();
                 optimum.getNextOptimums().addAll(optimums);
-                optimum.getNextOptimums().add(nextResultLayer.get(age + 1));
             }
         } else {
-            optimum = new EquipmentOptimum(maxReplaceIncome, ReplacementDecision.REPLACE);
+            optimum = new EquipmentOptimum(maxReplaceIncome, year);
             if (nextResultLayer != null) {
                 double finalLastReplaceFunctionValue = lastReplaceFunctionValue;
-                var optimums = nextResultLayer.values().stream().filter(entry -> entry.getFunctionValue() == finalLastReplaceFunctionValue).toList();
+                var optimums = nextResultLayer.values().stream()
+                        .filter(entry -> entry.getFunctionValue() == finalLastReplaceFunctionValue)
+                        .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
+                        .toList();
                 optimum.getNextOptimums().addAll(optimums);
             }
         }
-        optimum.addNewEquipmentAges(maxReplaceIncomeAges);
         currentResultLayer.put(age, optimum);
     }
 
