@@ -1,6 +1,9 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 
 import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
+import com.kotikov.equiplacer.client.desktop.util.SolutionSequenceToStringListConverter;
+import com.kotikov.equiplacer.client.desktop.view.dialog.CostsInputDialog;
+import com.kotikov.equiplacer.client.desktop.view.dialog.OutputDialog;
 import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPanel;
 
 import javax.swing.*;
@@ -18,7 +21,7 @@ public class InputPanel extends JPanel {
     private final JButton calculateButton;
     private final EquipmentDetailsPanel equipmentDetailsPanel;
 
-    private  JTable costsTable;
+    private JTable costsTable;
 
     public InputPanel(TabContentPanel parentTabContentPanel) {
         this.parentTabContentPanel = parentTabContentPanel;
@@ -61,18 +64,7 @@ public class InputPanel extends JPanel {
             var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
             var solution = ApplicationContext.getEquipmentOptimumSolution(equipmentInformation);
             parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
-//            for (int i = 0; i < 4; i++) {
-//                switch (solution.getReplacementDecision()) {
-//                    case REPLACE -> System.out.println("R");
-//                    case KEEP -> System.out.println("K");
-//                    case BOTH -> System.out.println("B");
-//                }
-//                try {
-//                    solution = solution.getNextOptimums().get(0);
-//                } catch (Exception ex) {
-//                    System.out.println("EXCEPTION LOL");
-//                }
-//            }
+            new OutputDialog(SolutionSequenceToStringListConverter.convert(solution)).setVisible(true);
         });
     }
 }
