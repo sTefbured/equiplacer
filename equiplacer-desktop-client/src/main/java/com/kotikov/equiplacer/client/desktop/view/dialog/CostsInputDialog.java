@@ -1,6 +1,6 @@
 package com.kotikov.equiplacer.client.desktop.view.dialog;
 
-import org.apache.logging.log4j.util.TriConsumer;
+import com.kotikov.equiplacer.client.desktop.util.TriConsumer;
 
 import javax.swing.*;
 import java.awt.*;
