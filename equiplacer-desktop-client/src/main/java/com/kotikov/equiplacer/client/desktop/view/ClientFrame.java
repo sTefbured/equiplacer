@@ -7,8 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ClientFrame extends JFrame {
-    private static final Dimension MINIMUM_SIZE = new Dimension(400, 400);
-    private static final Dimension DEFAULT_SIZE = new Dimension(1000, 520);
+    private static final Dimension MINIMUM_SIZE = new Dimension(1350, 720);
+    private static final Dimension DEFAULT_SIZE = new Dimension(1350, 720);
     private static final String APPLICATION_TITLE = "Equiplacer";
 
     public ClientFrame() {

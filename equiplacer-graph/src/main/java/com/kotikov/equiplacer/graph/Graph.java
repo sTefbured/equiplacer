@@ -4,12 +4,17 @@ import com.kotikov.equiplacer.graph.iterator.DefaultGraphIterator;
 import com.kotikov.equiplacer.graph.iterator.LayeredGraphIterator;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class Graph<T> implements Iterable<Node<T>> {
-    private final NodeContainer<T> nodeContainer;
+    private NodeContainer<T> nodeContainer;
+
+    private Graph() {
+        nodeContainer = new NodeContainer<>();
+    }
 
     public Graph(int[][] adjacencyMatrix, List<T> data) {
-        nodeContainer = new NodeContainer<>();
+        this();
         initialize(adjacencyMatrix, data);
     }
 
@@ -22,6 +27,12 @@ public class Graph<T> implements Iterable<Node<T>> {
 
     public Iterator<List<Node<T>>> layeredIterator() {
         return new LayeredGraphIterator<>(nodeContainer.getNodeById(1));
+    }
+
+    public <E> Graph<E> map(Function<T, E> mapper) {
+        var result = new Graph<E>();
+        result.nodeContainer = nodeContainer.map(mapper);
+        return result;
     }
 
     @Override

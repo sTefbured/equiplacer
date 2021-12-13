@@ -24,7 +24,6 @@ class EquipmentReplacementServiceTest {
     @Test
     public void getAnswerSequences_NewEquipmentIsNew() {
         var equipmentInformation = EquipmentInformation.builder()
-                .setEquipmentCosts(List.of(100000, 100000, 100000, 100000))
                 .setMaxNewEquipmentAge(1)
                 .setIncomes(List.of(20000, 19000, 18500, 17200, 15500, 14000, 12200))
                 .setResidualCosts(List.of(100000, 80000, 60000, 50000, 30000, 10000, 5000))
@@ -69,7 +68,6 @@ class EquipmentReplacementServiceTest {
     @Test
     public void getAnswerSequences_NewEquipmentIsNotNew() {
         var equipmentInformation = EquipmentInformation.builder()
-                .setEquipmentCosts(List.of(100000, 100000, 100000, 100000))
                 .setMaxNewEquipmentAge(2)
                 .setIncomes(List.of(20000, 19000, 18500, 17200, 15500, 14000, 12200))
                 .setResidualCosts(List.of(100000, 80000, 60000, 50000, 30000, 10000, 5000))

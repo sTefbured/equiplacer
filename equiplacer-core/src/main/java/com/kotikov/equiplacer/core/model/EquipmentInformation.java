@@ -7,14 +7,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-//TODO: find out if should delete equipmentCosts (maybe residual costs is enough)
 public class EquipmentInformation {
     private int maxAge;
     private int yearsCount;
     private int currentAge;
     private int maxNewEquipmentAge;
     private boolean isSellLastYearEquipmentOn;
-    private List<Integer> equipmentCosts;
     private List<Integer> maintenanceCosts;
     private List<Integer> residualCosts;
     private List<Integer> incomes;
@@ -24,13 +22,12 @@ public class EquipmentInformation {
     }
 
     public EquipmentInformation(int maxAge, int yearsCount, int currentAge, int maxNewEquipmentAge,
-                                boolean isSellLastYearEquipmentOn, List<Integer> equipmentCosts,
-                                List<Integer> maintenanceCosts, List<Integer> residualCosts, List<Integer> incomes) {
+                                boolean isSellLastYearEquipmentOn, List<Integer> maintenanceCosts,
+                                List<Integer> residualCosts, List<Integer> incomes) {
         this.maxAge = maxAge;
         this.yearsCount = yearsCount;
         this.currentAge = currentAge;
         this.maxNewEquipmentAge = maxNewEquipmentAge;
-        this.equipmentCosts = equipmentCosts;
         this.maintenanceCosts = maintenanceCosts;
         this.residualCosts = residualCosts;
         this.incomes = incomes;
@@ -58,14 +55,14 @@ public class EquipmentInformation {
 
         return new EqualsBuilder().append(maxAge, that.maxAge).append(yearsCount, that.yearsCount)
                 .append(currentAge, that.currentAge).append(maxNewEquipmentAge, that.maxNewEquipmentAge)
-                .append(equipmentCosts, that.equipmentCosts).append(maintenanceCosts, that.maintenanceCosts)
-                .append(residualCosts, that.residualCosts).append(incomes, that.incomes).isEquals();
+                .append(maintenanceCosts, that.maintenanceCosts).append(residualCosts, that.residualCosts)
+                .append(incomes, that.incomes).isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(maxAge).append(yearsCount)
-                .append(currentAge).append(maxNewEquipmentAge).append(equipmentCosts).append(maintenanceCosts)
+                .append(currentAge).append(maxNewEquipmentAge).append(maintenanceCosts)
                 .append(residualCosts).append(incomes).toHashCode();
     }
 
@@ -91,14 +88,6 @@ public class EquipmentInformation {
 
     public void setCurrentAge(int currentAge) {
         this.currentAge = currentAge;
-    }
-
-    public List<Integer> getEquipmentCosts() {
-        return equipmentCosts;
-    }
-
-    public void setEquipmentCosts(List<Integer> equipmentCosts) {
-        this.equipmentCosts = equipmentCosts;
     }
 
     public List<Integer> getMaintenanceCosts() {
@@ -147,7 +136,6 @@ public class EquipmentInformation {
         private int currentAge;
         private int maxNewEquipmentAge;
         private boolean isSellLastYearEquipmentOn;
-        private List<Integer> equipmentCosts;
         private List<Integer> maintenanceCosts;
         private List<Integer> residualCosts;
         private List<Integer> incomes;
@@ -157,7 +145,7 @@ public class EquipmentInformation {
 
         public EquipmentInformation build() {
             return new EquipmentInformation(maxAge, yearsCount, currentAge, maxNewEquipmentAge,
-                    isSellLastYearEquipmentOn, equipmentCosts, maintenanceCosts, residualCosts, incomes);
+                    isSellLastYearEquipmentOn, maintenanceCosts, residualCosts, incomes);
         }
 
         public int getMaxAge() {
@@ -193,15 +181,6 @@ public class EquipmentInformation {
 
         public EquipmentInformationBuilder setMaxNewEquipmentAge(int maxNewEquipmentAge) {
             this.maxNewEquipmentAge = maxNewEquipmentAge;
-            return this;
-        }
-
-        public List<Integer> getEquipmentCosts() {
-            return equipmentCosts;
-        }
-
-        public EquipmentInformationBuilder setEquipmentCosts(List<Integer> equipmentCosts) {
-            this.equipmentCosts = equipmentCosts;
             return this;
         }
 
