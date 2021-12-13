@@ -7,7 +7,7 @@
     <groupId>com.kotikov.equiplacer</groupId>
     <artifactId>equiplacer-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <modules>
         <module>equiplacer-core</module>
@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
         <apacheCommons.version>3.12.0</apacheCommons.version>
-        <equiplacer.version>1.0.0</equiplacer.version>
+        <equiplacer.version>1.0.1</equiplacer.version>
     </properties>
 
     <dependencies>
