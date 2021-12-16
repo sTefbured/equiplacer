@@ -71,8 +71,8 @@ public class JGraphPanel<T extends Number> extends JPanel {
         graphics2D.setFont(oldFont);
     }
 
-    public void setGraph(Graph<NodeComponent<T>> graph) {
-        coordinateSystemPanel.setGraph(graph);
+    public void addGraph(Graph<NodeComponent<T>> graph) {
+        coordinateSystemPanel.addGraph(graph);
     }
 
     public CoordinateSystemPanel<T> getCoordinateSystemPanel() {

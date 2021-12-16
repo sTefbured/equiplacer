@@ -1,5 +1,6 @@
 package com.kotikov.equiplacer.jgraphpanel.layout;
 
+import com.kotikov.equiplacer.graph.Graph;
 import com.kotikov.equiplacer.graph.Node;
 import com.kotikov.equiplacer.jgraphpanel.childpanel.CoordinateSystemPanel;
 import com.kotikov.equiplacer.jgraphpanel.node.NodeComponent;
@@ -35,15 +36,18 @@ public class CoordinatesLayout implements LayoutManager {
         Number maxValue = null;
         Number minValue = null;
 
-        for (Node<? extends NodeComponent<? extends Number>> graphNode : panel.getGraph()) {
-            width += deltaX;
-            if (maxValue == null || maxValue.doubleValue() < graphNode.getData().getValue().doubleValue()) {
-                maxValue = graphNode.getData().getValue();
-            }
-            if (minValue == null || minValue.doubleValue() > graphNode.getData().getValue().doubleValue()) {
-                minValue = graphNode.getData().getValue();
+        for (Graph<? extends NodeComponent<? extends Number>> graph : panel.getGraphs()) {
+            for (Node<? extends NodeComponent<? extends Number>> graphNode : graph) {
+                width += deltaX;
+                if (maxValue == null || maxValue.doubleValue() < graphNode.getData().getValue().doubleValue()) {
+                    maxValue = graphNode.getData().getValue();
+                }
+                if (minValue == null || minValue.doubleValue() > graphNode.getData().getValue().doubleValue()) {
+                    minValue = graphNode.getData().getValue();
+                }
             }
         }
+
         if (maxValue == null || minValue == null) {
             throw new RuntimeException("Tree is empty.");
         }
@@ -65,26 +69,28 @@ public class CoordinatesLayout implements LayoutManager {
             throw new IllegalArgumentException(CoordinateSystemPanel.class.getName() + " container expected but "
                     + parent.getClass().getName() + " provided.");
         }
-        if (coordinateSystemPanel.getGraph() == null) {
+        if (coordinateSystemPanel.getGraphs().isEmpty()) {
             return;
         }
         int deltaX = coordinateSystemPanel.getDeltaX();
         int deltaY = coordinateSystemPanel.getDeltaY();
-        var layeredIterator = coordinateSystemPanel.getGraph().layeredIterator();
-        int internalOffsetX = 0;
-        while (layeredIterator.hasNext()) {
-            var layer = layeredIterator.next();
-            int finalInternalOffsetX = internalOffsetX;
-            layer.forEach(entry -> {
-                int centerX = finalInternalOffsetX + coordinateSystemPanel.getOffsetX() + GRID_PADDING;
-                int centerY = (int) (coordinateSystemPanel.getHeight() - entry.getData().getValue().doubleValue() * deltaY)
-                        - coordinateSystemPanel.getOffsetY() - GRID_PADDING;
-                int x = centerX - entry.getData().getWidth() / 2;
-                int y = centerY - entry.getData().getHeight() / 2;
-                entry.getData().setBounds(x, y, entry.getData().getWidth(), entry.getData().getHeight());
-                entry.getData().getBounds();
-            });
-            internalOffsetX += deltaX;
+        for (var graph : coordinateSystemPanel.getGraphs()) {
+            var layeredIterator = graph.layeredIterator();
+            int internalOffsetX = 0;
+            while (layeredIterator.hasNext()) {
+                var layer = layeredIterator.next();
+                int finalInternalOffsetX = internalOffsetX;
+                layer.forEach(entry -> {
+                    int centerX = finalInternalOffsetX + coordinateSystemPanel.getOffsetX() + GRID_PADDING;
+                    int centerY = (int) (coordinateSystemPanel.getHeight() - entry.getData().getValue().doubleValue() * deltaY)
+                            - coordinateSystemPanel.getOffsetY() - GRID_PADDING;
+                    int x = centerX - entry.getData().getWidth() / 2;
+                    int y = centerY - entry.getData().getHeight() / 2;
+                    entry.getData().setBounds(x, y, entry.getData().getWidth(), entry.getData().getHeight());
+                    entry.getData().getBounds();
+                });
+                internalOffsetX += deltaX;
+            }
         }
     }
 }
