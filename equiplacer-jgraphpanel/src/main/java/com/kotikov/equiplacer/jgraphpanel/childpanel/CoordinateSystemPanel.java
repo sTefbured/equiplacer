@@ -6,6 +6,8 @@ import com.kotikov.equiplacer.jgraphpanel.node.NodeComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.kotikov.equiplacer.jgraphpanel.util.JGraphPanelConstants.GRID_PADDING;
 
@@ -21,21 +23,29 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
     private static final Color GRID_LINE_COLOR = Color.BLUE;
     private static final int MIN_DELTA_X = 30;
     private static final int MIN_DELTA_Y = 20;
-    private static final Color CONNECTION_COLOR = Color.BLACK;
+    private static final Color DEFAULT_CONNECTION_COLOR = Color.BLACK;
 
-    private Graph<NodeComponent<T>> graph;
+    private final List<Graph<NodeComponent<T>>> graphs;
+    private final List<Color> connectionColors;
+
     private int offsetX;
     private int offsetY;
     private int deltaX;
     private int deltaY;
 
-    public CoordinateSystemPanel(Graph<NodeComponent<T>> graph) {
+    public CoordinateSystemPanel(Graph<NodeComponent<T>> graph, Color connectionColor) {
         super();
         setBackground(Color.WHITE);
         setLayout(new CoordinatesLayout());
         this.deltaX = 30;
         this.deltaY = 20;
-        setGraph(graph);
+        this.connectionColors = new ArrayList<>();
+        graphs = new ArrayList<>();
+        addGraph(graph, connectionColor);
+    }
+
+    public CoordinateSystemPanel(Graph<NodeComponent<T>> graph) {
+        this(graph, DEFAULT_CONNECTION_COLOR);
     }
 
     @Override
@@ -44,23 +54,26 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
         Graphics2D graphics2D = (Graphics2D) g;
         drawGrid(graphics2D);
         drawAxes(graphics2D);
-        if (graph != null) {
+        if (!graphs.isEmpty()) {
             drawConnectionsBetweenNodes(graphics2D);
         }
     }
 
     private void drawConnectionsBetweenNodes(Graphics2D graphics2D) {
         var oldColor = graphics2D.getColor();
-        graphics2D.setColor(CONNECTION_COLOR);
-        graph.forEach(node -> {
-            var nodeBounds = node.getData().getBounds();
-            var firstX = nodeBounds.getCenterX();
-            var firstY = nodeBounds.getCenterY();
-            node.getConnections().forEach(connection -> {
-                var connectionBounds = connection.getData().getBounds();
-                var secondX = connectionBounds.getCenterX();
-                var secondY = connectionBounds.getCenterY();
-                drawConnection(graphics2D, firstX, firstY, secondX, secondY);
+        var colorIterator = connectionColors.iterator();
+        graphs.forEach(graph -> {
+            graphics2D.setColor(colorIterator.next());
+            graph.forEach(node -> {
+                var nodeBounds = node.getData().getBounds();
+                var firstX = nodeBounds.getCenterX();
+                var firstY = nodeBounds.getCenterY();
+                node.getConnections().forEach(connection -> {
+                    var connectionBounds = connection.getData().getBounds();
+                    var secondX = connectionBounds.getCenterX();
+                    var secondY = connectionBounds.getCenterY();
+                    drawConnection(graphics2D, firstX, firstY, secondX, secondY);
+                });
             });
         });
         graphics2D.setColor(oldColor);
@@ -135,17 +148,28 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
                 y + fontMetrics.getHeight() / 2 - 3);
     }
 
-    public Graph<NodeComponent<T>> getGraph() {
-        return graph;
+    public Graph<NodeComponent<T>> getGraphAt(int index) {
+        return graphs.get(index);
     }
 
-    public void setGraph(Graph<NodeComponent<T>> graph) {
-        if (this.graph != null) {
-            this.graph.forEach(node -> remove(node.getData()));
-        }
-        this.graph = graph;
+    public void addGraph(Graph<NodeComponent<T>> graph) {
+        addGraph(graph, DEFAULT_CONNECTION_COLOR);
+    }
+
+    public void addGraph(Graph<NodeComponent<T>> graph, Color connectionColor) {
         if (graph != null) {
             graph.forEach(node -> add(node.getData()));
+            graphs.add(graph);
+            connectionColors.add(connectionColor);
+        }
+    }
+
+    public void removeGraphAt(int index) {
+        var graph = graphs.get(index);
+        if (graph != null) {
+            graph.forEach(node -> remove(node.getData()));
+            graphs.remove(index);
+            connectionColors.remove(index);
         }
     }
 
@@ -179,5 +203,9 @@ public class CoordinateSystemPanel<T extends Number> extends JPanel {
 
     public void setDeltaY(int deltaY) {
         this.deltaY = Math.max(deltaY, MIN_DELTA_Y);
+    }
+
+    public List<Graph<NodeComponent<T>>> getGraphs() {
+        return graphs;
     }
 }

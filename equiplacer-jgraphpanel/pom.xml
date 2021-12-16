@@ -5,7 +5,7 @@
     <parent>
         <artifactId>equiplacer-parent</artifactId>
         <groupId>com.kotikov.equiplacer</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,14 +14,13 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <equiplacer.graph.version>1.0-SNAPSHOT</equiplacer.graph.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.kotikov.equiplacer</groupId>
             <artifactId>equiplacer-graph</artifactId>
-            <version>${equiplacer.graph.version}</version>
+            <version>${equiplacer.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

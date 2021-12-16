@@ -61,6 +61,8 @@ public class EquipmentReplacementService {
             optimum = new EquipmentOptimum(saveIncome, age);
             if (nextResultLayer != null) {
                 optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
+            } else {
+                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, new EquipmentOptimum()));
             }
             currentResultLayer.put(age, optimum);
             return;
@@ -75,6 +77,9 @@ public class EquipmentReplacementService {
                         .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
                         .toList();
                 optimum.getNextOptimums().addAll(optimums);
+            } else {
+                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, new EquipmentOptimum()));
+                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.REPLACE, new EquipmentOptimum()));
             }
         } else {
             optimum = new EquipmentOptimum(maxReplaceIncome, age);
@@ -85,6 +90,8 @@ public class EquipmentReplacementService {
                         .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
                         .toList();
                 optimum.getNextOptimums().addAll(optimums);
+            } else {
+                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.REPLACE, new EquipmentOptimum()));
             }
         }
         currentResultLayer.put(age, optimum);
