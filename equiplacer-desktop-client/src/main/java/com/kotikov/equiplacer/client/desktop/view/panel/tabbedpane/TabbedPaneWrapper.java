@@ -1,6 +1,5 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabbedpane;
 
-
 import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPanel;
 
 import javax.swing.*;

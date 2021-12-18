@@ -1,8 +1,6 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 
 import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
-import com.kotikov.equiplacer.client.desktop.util.SolutionSequenceToStringListConverter;
-import com.kotikov.equiplacer.client.desktop.view.dialog.CostsInputDialog;
 import com.kotikov.equiplacer.client.desktop.view.dialog.OutputDialog;
 import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPanel;
 
@@ -64,7 +62,7 @@ public class InputPanel extends JPanel {
             var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
             var solution = ApplicationContext.getEquipmentOptimumSolution(equipmentInformation);
             parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
-            new OutputDialog(SolutionSequenceToStringListConverter.convert(solution)).setVisible(true);
+            new OutputDialog(solution, parentTabContentPanel).setVisible(true);
         });
     }
 }

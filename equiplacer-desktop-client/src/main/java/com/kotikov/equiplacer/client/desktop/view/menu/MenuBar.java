@@ -6,6 +6,6 @@ public class MenuBar extends JMenuBar {
     public MenuBar() {
         super();
         add(new FileMenu());
-        add(new HelpMenu());
+        add(new UtilsMenu());
     }
 }
