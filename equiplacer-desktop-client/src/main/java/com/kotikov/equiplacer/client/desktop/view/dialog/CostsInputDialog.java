@@ -1,5 +1,6 @@
 package com.kotikov.equiplacer.client.desktop.view.dialog;
 
+import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
 import com.kotikov.equiplacer.client.desktop.util.TriConsumer;
 
 import javax.swing.*;
@@ -13,11 +14,11 @@ public class CostsInputDialog extends JDialog {
     private List<JTextField> residualValueTextFields;
 
     public CostsInputDialog(TriConsumer<List<Integer>, List<Integer>, List<Integer>> onSubmitClick, int maxAge) {
-        super((JDialog)null);
+        super(ApplicationContext.getClientFrame());
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         addComponents(onSubmitClick, maxAge);
         pack();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(ApplicationContext.getClientFrame());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 

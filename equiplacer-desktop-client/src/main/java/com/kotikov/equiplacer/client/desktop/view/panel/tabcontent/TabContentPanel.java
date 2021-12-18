@@ -29,4 +29,8 @@ public class TabContentPanel extends JPanel {
         revalidate();
         repaint();
     }
+
+    public JGraphPanel<Integer> getGraphPanel() {
+        return graphPanel;
+    }
 }
