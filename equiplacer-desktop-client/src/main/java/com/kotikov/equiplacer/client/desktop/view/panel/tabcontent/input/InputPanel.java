@@ -3,6 +3,7 @@ package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
 import com.kotikov.equiplacer.client.desktop.view.dialog.OutputDialog;
 import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPanel;
+import com.kotikov.equiplacer.core.model.EquipmentInformation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -66,11 +67,21 @@ public class InputPanel extends JPanel {
 
     private void addCalculateButtonListener() {
         calculateButton.addActionListener(e -> {
-            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
-            if (equipmentInformation == null) {
-                showMissingInfoDialog();
-                return;
-            }
+//            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
+//            if (equipmentInformation == null) {
+//                showMissingInfoDialog();
+//                return;
+//            }
+            var equipmentInformation = EquipmentInformation.builder()
+                    .setMaxNewEquipmentAge(1)
+                    .setIncomes(List.of(20000, 19000, 18500, 17200, 15500, 14000, 12200))
+                    .setResidualCosts(List.of(100000, 80000, 60000, 50000, 30000, 10000, 5000))
+                    .setMaintenanceCosts(List.of(200, 600, 1200, 1500, 1700, 1800, 2200))
+                    .setCurrentAge(3)
+                    .setMaxAge(6)
+                    .setSellLastYearEquipmentOn(true)
+                    .setYearsCount(4)
+                    .build();
             var solution = ApplicationContext.getEquipmentOptimumSolution(equipmentInformation);
             parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
             new OutputDialog(solution, parentTabContentPanel).setVisible(true);
@@ -100,11 +111,21 @@ public class InputPanel extends JPanel {
 
     private void addDrawGraphButtonListener() {
         drawGraphButton.addActionListener(e -> {
-            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
-            if (equipmentInformation == null) {
-                showMissingInfoDialog();
-                return;
-            }
+//            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
+//            if (equipmentInformation == null) {
+//                showMissingInfoDialog();
+//                return;
+//            }
+            var equipmentInformation = EquipmentInformation.builder()
+                                .setMaxNewEquipmentAge(1)
+                                .setIncomes(List.of(20000, 19000, 18500, 17200, 15500, 14000, 12200))
+                                .setResidualCosts(List.of(100000, 80000, 60000, 50000, 30000, 10000, 5000))
+                                .setMaintenanceCosts(List.of(200, 600, 1200, 1500, 1700, 1800, 2200))
+                                .setCurrentAge(3)
+                                .setMaxAge(6)
+                                .setSellLastYearEquipmentOn(true)
+                                .setYearsCount(4)
+                                .build();
             parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
         });
     }

@@ -2,6 +2,7 @@ package com.kotikov.equiplacer.client.desktop.util;
 
 import com.kotikov.equiplacer.core.model.EquipmentOptimum;
 import com.kotikov.equiplacer.core.model.enums.ReplacementDecision;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,20 +17,20 @@ public class SolutionSequenceToStringListConverter {
         }
     };
 
-    public static List<String> convert(EquipmentOptimum solution) {
+    public static List<Pair<Double, String>> convert(EquipmentOptimum solution) {
         if (solution.getNextOptimums().isEmpty()) {
             return new LinkedList<>() {{
-                add("");
+                add(Pair.of(0.0, ""));
             }};
         }
         var nextOptimums = solution.getNextOptimums();
         var resultList = new LinkedList<String>();
         nextOptimums.forEach(entry -> {
             var convertedList = convert(entry.getValue()).stream()
-                    .map(str -> REPLACEMENT_DECISION_CHARACTER_MAP.get(entry.getKey()) + "-" + entry.getValue().getAge() + " " + str)
+                    .map(item -> REPLACEMENT_DECISION_CHARACTER_MAP.get(entry.getKey()) + "-" + entry.getValue().getAge() + " " + item.getRight())
                     .toList();
             resultList.addAll(convertedList);
         });
-        return resultList;
+        return resultList.stream().map(str -> Pair.of(solution.getFunctionValue(), str)).toList();
     }
 }
