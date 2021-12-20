@@ -1,10 +1,13 @@
 package com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input;
 
 import com.kotikov.equiplacer.client.desktop.view.dialog.CostsInputDialog;
+import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input.util.IntegerTextField;
 import com.kotikov.equiplacer.core.model.EquipmentInformation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class EquipmentDetailsPanel extends JPanel {
@@ -49,10 +52,16 @@ public class EquipmentDetailsPanel extends JPanel {
     }
 
     private void initializeTextFields() {
-        currentEquipmentAgeTextField = new JTextField();
-        yearsCountTextField = new JTextField();
-        maxEquipmentAgeTextField = new JTextField();
-        maxNewEquipmentAgeTextField = new JTextField();
+        currentEquipmentAgeTextField = new IntegerTextField();
+        yearsCountTextField = new IntegerTextField();
+        maxEquipmentAgeTextField = new IntegerTextField();
+        maxNewEquipmentAgeTextField = new IntegerTextField();
+        maxEquipmentAgeTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                enterCostsButton.setEnabled(maxEquipmentAgeTextField.getText().length() != 0);
+            }
+        });
         currentEquipmentAgeTextField.setFont(TEXT_FIELD_FONT);
         yearsCountTextField.setFont(TEXT_FIELD_FONT);
         maxEquipmentAgeTextField.setFont(TEXT_FIELD_FONT);
@@ -65,6 +74,9 @@ public class EquipmentDetailsPanel extends JPanel {
     }
 
     public EquipmentInformation getEquipmentInformation() {
+        if (isInformationMissing()) {
+            return null;
+        }
         return EquipmentInformation.builder()
                 .setMaxAge(Integer.parseInt(maxEquipmentAgeTextField.getText()))
                 .setYearsCount(Integer.parseInt(yearsCountTextField.getText()))
@@ -77,8 +89,19 @@ public class EquipmentDetailsPanel extends JPanel {
                 .build();
     }
 
+    private boolean isInformationMissing() {
+        return currentEquipmentAgeTextField.getText().isEmpty()
+                || yearsCountTextField.getText().isEmpty()
+                || maxEquipmentAgeTextField.getText().isEmpty()
+                || maxNewEquipmentAgeTextField.getText().isEmpty()
+                || maintenanceCosts.isEmpty()
+                || incomes.isEmpty()
+                || residualValues.isEmpty();
+    }
+
     private void initializeEnterCostsButton() {
         enterCostsButton = new JButton(COSTS_INPUT_BUTTON_STR);
+        enterCostsButton.setEnabled(false);
         enterCostsButton.setPreferredSize(new Dimension(145, 30));
         enterCostsButton.addActionListener(e -> new CostsInputDialog(this::onCostsInputDialogSubmit,
                 Integer.parseInt(maxEquipmentAgeTextField.getText())).setVisible(true));

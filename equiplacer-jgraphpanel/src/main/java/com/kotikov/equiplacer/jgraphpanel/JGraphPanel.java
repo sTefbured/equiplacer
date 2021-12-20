@@ -75,6 +75,10 @@ public class JGraphPanel<T extends Number> extends JPanel {
         coordinateSystemPanel.addGraph(graph);
     }
 
+    public void removeLastAddedGraph() {
+        coordinateSystemPanel.removeGraphAt(1);
+    }
+
     public CoordinateSystemPanel<T> getCoordinateSystemPanel() {
         return coordinateSystemPanel;
     }

@@ -7,6 +7,8 @@ import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.TabContentPan
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class InputPanel extends JPanel {
@@ -17,8 +19,10 @@ public class InputPanel extends JPanel {
     private final TabContentPanel parentTabContentPanel;
 
     private final JButton calculateButton;
+    private final JButton drawGraphButton;
     private final EquipmentDetailsPanel equipmentDetailsPanel;
 
+    private JDialog missingInfoDialog;
     private JTable costsTable;
 
     public InputPanel(TabContentPanel parentTabContentPanel) {
@@ -31,9 +35,12 @@ public class InputPanel extends JPanel {
         add(new JScrollPane(costsTable));
         calculateButton = new JButton("Calculate");
         addCalculateButtonListener();
-        var calculateButtonWrapper = new JPanel();
-        calculateButtonWrapper.add(calculateButton);
-        add(calculateButtonWrapper);
+        drawGraphButton = new JButton("Draw graph");
+        addDrawGraphButtonListener();
+        var buttonWrapper = new JPanel(new GridLayout(1, 2, 200, 0));
+        buttonWrapper.add(drawGraphButton);
+        buttonWrapper.add(calculateButton);
+        add(buttonWrapper);
     }
 
     private void initializeCostsTable() {
@@ -60,9 +67,45 @@ public class InputPanel extends JPanel {
     private void addCalculateButtonListener() {
         calculateButton.addActionListener(e -> {
             var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
+            if (equipmentInformation == null) {
+                showMissingInfoDialog();
+                return;
+            }
             var solution = ApplicationContext.getEquipmentOptimumSolution(equipmentInformation);
             parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
             new OutputDialog(solution, parentTabContentPanel).setVisible(true);
+        });
+    }
+
+    private void showMissingInfoDialog() {
+        if (missingInfoDialog != null) {
+            return;
+        }
+        missingInfoDialog = new JDialog(ApplicationContext.getClientFrame());
+        var label = new JLabel("Please provide full information about equipment");
+        label.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        missingInfoDialog.add(label);
+        missingInfoDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                missingInfoDialog = null;
+            }
+        });
+        missingInfoDialog.pack();
+        missingInfoDialog.setResizable(false);
+        missingInfoDialog.setLocationRelativeTo(ApplicationContext.getClientFrame());
+        missingInfoDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        missingInfoDialog.setVisible(true);
+    }
+
+    private void addDrawGraphButtonListener() {
+        drawGraphButton.addActionListener(e -> {
+            var equipmentInformation = equipmentDetailsPanel.getEquipmentInformation();
+            if (equipmentInformation == null) {
+                showMissingInfoDialog();
+                return;
+            }
+            parentTabContentPanel.initializeGraph(ApplicationContext.getEquipmentGraph(equipmentInformation));
         });
     }
 }

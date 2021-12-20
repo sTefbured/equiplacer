@@ -40,7 +40,6 @@ public class EquipmentReplacementService {
         return resultStack;
     }
 
-    //TODO: REFACTOR, BUT DON'T BREAK IT PLS
     private void setOptimums(Map<Integer, EquipmentOptimum> currentResultLayer, int age, int year,
                              Map<Integer, EquipmentOptimum> nextResultLayer) {
         EquipmentOptimum optimum;
@@ -58,50 +57,74 @@ public class EquipmentReplacementService {
             lastReplaceFunctionValue = replaceIncome.getRight();
         }
         if (maxReplaceIncome < saveIncome) {
-            optimum = new EquipmentOptimum(saveIncome, age);
-            if (nextResultLayer != null) {
-                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
-            } else {
-                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, new EquipmentOptimum()));
-            }
-            currentResultLayer.put(age, optimum);
-            return;
-        }
-        if (saveIncome == maxReplaceIncome) {
-            optimum = new EquipmentOptimum(saveIncome, age);
-            if (nextResultLayer != null) {
-                double finalLastReplaceFunctionValue = lastReplaceFunctionValue;
-                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
-                var optimums = nextResultLayer.values().stream()
-                        .filter(entry -> entry.getFunctionValue() == finalLastReplaceFunctionValue)
-                        .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
-                        .toList();
-                optimum.getNextOptimums().addAll(optimums);
-            } else {
-                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, new EquipmentOptimum()));
-                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.REPLACE, new EquipmentOptimum()));
-            }
+            optimum = createSaveOptimum(saveIncome, age, nextResultLayer, currentResultLayer);
+        } else if (saveIncome == maxReplaceIncome) {
+            optimum = createBothOptimum(saveIncome, age, nextResultLayer, lastReplaceFunctionValue);
         } else {
-            optimum = new EquipmentOptimum(maxReplaceIncome, age);
-            if (nextResultLayer != null) {
-                double finalLastReplaceFunctionValue = lastReplaceFunctionValue;
-                var optimums = nextResultLayer.values().stream()
-                        .filter(entry -> entry.getFunctionValue() == finalLastReplaceFunctionValue)
-                        .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
-                        .toList();
-                optimum.getNextOptimums().addAll(optimums);
-            } else {
-                optimum.getNextOptimums().add(Map.entry(ReplacementDecision.REPLACE, new EquipmentOptimum()));
-            }
+            optimum = createReplaceOptimum(maxReplaceIncome, age, nextResultLayer, lastReplaceFunctionValue);
         }
         currentResultLayer.put(age, optimum);
     }
 
-    private Pair<Integer, Double> getReplaceIncome(int age, int year, int newEquipmentAge, Map<Integer, EquipmentOptimum> nextResultLayer) {
+    private EquipmentOptimum createReplaceOptimum(double replaceIncome,
+                                                  int age,
+                                                  Map<Integer, EquipmentOptimum> nextResultLayer,
+                                                  double lastReplaceFunctionValue) {
+        var optimum = new EquipmentOptimum(replaceIncome, age);
+        if (nextResultLayer != null) {
+            var optimums = nextResultLayer.values().stream()
+                    .filter(entry -> entry.getFunctionValue() == lastReplaceFunctionValue)
+                    .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
+                    .toList();
+            optimum.getNextOptimums().addAll(optimums);
+        } else {
+            optimum.getNextOptimums().add(Map.entry(ReplacementDecision.REPLACE, new EquipmentOptimum(0, 1)));
+        }
+        return optimum;
+    }
+
+    private EquipmentOptimum createBothOptimum(double income,
+                                               int age,
+                                               Map<Integer, EquipmentOptimum> nextResultLayer,
+                                               double lastReplaceFunctionValue) {
+        var optimum = new EquipmentOptimum(income, age);
+        if (nextResultLayer != null) {
+            optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
+            var optimums = nextResultLayer.values().stream()
+                    .filter(entry -> entry.getFunctionValue() == lastReplaceFunctionValue)
+                    .map(value -> Map.entry(ReplacementDecision.REPLACE, value))
+                    .toList();
+            optimum.getNextOptimums().addAll(optimums);
+        } else {
+            optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, new EquipmentOptimum(0, age + 1)));
+            optimum.getNextOptimums().add(Map.entry(ReplacementDecision.REPLACE, new EquipmentOptimum(0, 1)));
+        }
+        return optimum;
+    }
+
+    private EquipmentOptimum createSaveOptimum(double saveIncome,
+                                               int age,
+                                               Map<Integer, EquipmentOptimum> nextResultLayer,
+                                               Map<Integer, EquipmentOptimum> currentResultLayer) {
+        var optimum = new EquipmentOptimum(saveIncome, age);
+        if (nextResultLayer != null) {
+            optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, nextResultLayer.get(age + 1)));
+        } else {
+            optimum.getNextOptimums().add(Map.entry(ReplacementDecision.KEEP, new EquipmentOptimum(0, age + 1)));
+        }
+        currentResultLayer.put(age, optimum);
+        return optimum;
+    }
+
+    private Pair<Integer, Double> getReplaceIncome(int age,
+                                                   int year,
+                                                   int newEquipmentAge,
+                                                   Map<Integer, EquipmentOptimum> nextResultLayer) {
         var lastFunctionValue = nextResultLayer != null
                 ? nextResultLayer.get(newEquipmentAge).getFunctionValue()
                 : 0;
-        var result = equipmentInformation.getIncomes().get(newEquipmentAge - 1) + equipmentInformation.getResidualCosts().get(age);
+        int result = equipmentInformation.getIncomes().get(newEquipmentAge - 1);
+        result += equipmentInformation.getResidualCosts().get(age);
         result += -equipmentInformation.getResidualCosts().get(newEquipmentAge - 1) + lastFunctionValue;
         result -= equipmentInformation.getMaintenanceCosts().get(newEquipmentAge - 1);
         if (equipmentInformation.isSellLastYearEquipmentOn() && equipmentInformation.getYearsCount() == year) {

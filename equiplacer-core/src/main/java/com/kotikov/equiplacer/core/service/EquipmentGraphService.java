@@ -48,7 +48,8 @@ public class EquipmentGraphService {
         }
     }
 
-    private void setConnections(List<Map.Entry<Pair<Integer, Integer>, int[]>> nodesPool, EquipmentGraphDTO equipmentGraphDTO) {
+    private void setConnections(List<Map.Entry<Pair<Integer, Integer>, int[]>> nodesPool,
+                                EquipmentGraphDTO equipmentGraphDTO) {
         nodesPool.forEach(entry -> {
             var year = entry.getKey().getRight();
             if (year > equipmentGraphDTO.getYearsCount()) {

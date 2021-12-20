@@ -26,7 +26,7 @@ public class SolutionSequenceToStringListConverter {
         var resultList = new LinkedList<String>();
         nextOptimums.forEach(entry -> {
             var convertedList = convert(entry.getValue()).stream()
-                    .map(str -> REPLACEMENT_DECISION_CHARACTER_MAP.get(entry.getKey()) + str)
+                    .map(str -> REPLACEMENT_DECISION_CHARACTER_MAP.get(entry.getKey()) + "-" + entry.getValue().getAge() + " " + str)
                     .toList();
             resultList.addAll(convertedList);
         });

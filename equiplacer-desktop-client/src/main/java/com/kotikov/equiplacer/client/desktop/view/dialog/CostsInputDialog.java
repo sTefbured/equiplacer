@@ -2,6 +2,7 @@ package com.kotikov.equiplacer.client.desktop.view.dialog;
 
 import com.kotikov.equiplacer.client.desktop.context.ApplicationContext;
 import com.kotikov.equiplacer.client.desktop.util.TriConsumer;
+import com.kotikov.equiplacer.client.desktop.view.panel.tabcontent.input.util.IntegerTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,9 +35,9 @@ public class CostsInputDialog extends JDialog {
         residualValueTextFields = new ArrayList<>(maxAge);
         for (int i = 0; i < maxAge + 1; i++) {
             fieldsPanel.add(new JLabel(String.valueOf(i), SwingConstants.CENTER));
-            incomeTextFields.add(new JTextField());
-            maintenanceTextFields.add(new JTextField());
-            residualValueTextFields.add(new JTextField());
+            incomeTextFields.add(new IntegerTextField());
+            maintenanceTextFields.add(new IntegerTextField());
+            residualValueTextFields.add(new IntegerTextField());
             fieldsPanel.add(incomeTextFields.get(i));
             fieldsPanel.add(maintenanceTextFields.get(i));
             fieldsPanel.add(residualValueTextFields.get(i));
@@ -55,19 +56,34 @@ public class CostsInputDialog extends JDialog {
 
     private List<Integer> getIncomes() {
         return incomeTextFields.stream()
-                .map(textField -> Integer.parseInt(textField.getText()))
+                .map(textField -> {
+                    if (textField.getText().isEmpty()) {
+                        return 0;
+                    }
+                    return Integer.parseInt(textField.getText());
+                })
                 .toList();
     }
 
     private List<Integer> getMaintenanceCosts() {
         return maintenanceTextFields.stream()
-                .map(textField -> Integer.parseInt(textField.getText()))
+                .map(textField -> {
+                    if (textField.getText().isEmpty()) {
+                        return 0;
+                    }
+                    return Integer.parseInt(textField.getText());
+                })
                 .toList();
     }
 
     private List<Integer> getResidualValues() {
         return residualValueTextFields.stream()
-                .map(textField -> Integer.parseInt(textField.getText()))
+                .map(textField -> {
+                    if (textField.getText().isEmpty()) {
+                        return 0;
+                    }
+                    return Integer.parseInt(textField.getText());
+                })
                 .toList();
     }
 }
